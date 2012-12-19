@@ -1,0 +1,15 @@
+{
+	"express" : {
+		"port" : 3000
+	},
+	"distribution" : {
+		"grade" : "single-process", "_commentOnGrade" : "grade can be: single-process, multi-process or multi-server",
+		"type" : "redis", "_commentOnType" : "memory (=single-process) and redis are now supported",
+		"settings": {
+			"port" 	: 9202,
+			"host" 	: "spadefish.redistogo.com",
+			"db"	: 1,
+			"auth" : ""
+		}
+	}
+}

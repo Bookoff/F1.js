@@ -1,0 +1,19 @@
+{
+  "name": "F1.js",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": "*",
+    "jade": "*",
+    "stylus": "*",
+
+    "socket.io" : "*",
+    "ascoltatori": "*",
+    "hiredis" : "*",
+    "redis" : "*",
+    "async" : "*"
+  }
+}
