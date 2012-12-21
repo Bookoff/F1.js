@@ -1,0 +1,51 @@
+%**VARIABILI PROGETTO DA MODIFICARE****************************
+
+\def\DOCUMENT 		{} %Nome del documento, ad esempio: Piano di Progetto
+\def\VERSION		{} %versione attuale
+\def\FILENAME		{} %ad esempio: piano\_di\_progetto\VERSIONE.pdf (gli _ devono avere l'escape)
+\def\CREATION		{} %data di creazione
+\def\LAST_CHANGE	{} %data di ultima modifica
+\def\DocSTATE 		{} %Draft, Proposal, Formal
+\def\DocUSE			{} %Private, Public
+
+%Personale
+%se ci sono più persone da indicare scrivere: {nome1, \\&nome2, \\&nome3 ecc..}
+\def\AUTHOR			{\ME}
+\def\CHECKER		{Mauro Conti}
+\def\APPROVAL		{Mauro Conti}
+%aggiungere \\&\PP se si tratta di un documento interno
+\def\PURCHASER		{Mauro Conti}
+
+%Variabili documento
+\def\TABLES		{true} %abilita - disabilita l'indice delle tabelle
+\def\FIGURES	{true} %abilita - disabilita l'indice delle figure
+
+%importa la struttura principale
+\input{../../template/structure}
+
+%**TABELLA DELLE MODIFICHE***************************
+%vari comandi per la struttura della tabella, NON MODIFICARE!
+\begin{center}
+\begin{tabular}{|c|p{7cm}|c|c|}
+\hline
+\textbf{Version} & \textbf{Description} & \textbf{Author} & \textbf{Date} \\
+\hline\hline
+%*******************MODIFICA QUI*****************
+%Scrivere qui la lista delle modifiche fatte al documento (dalla più recente alla più vecchia)
+%tuttle le righe devono finire con \\\hline 
+%Esempio:
+% 0.0.2 & Modificato qualcosa & N. Cognome & 3/12/2011 \\\hline
+% 0.0.1 & Pubblicazione prima bozza & N. Cognome & 1/12/2011 \\\hline
+% 0.0.1 & First version & \mbox{F. De Pretto} & 30/12/11\\
+\hline
+%*******************FINE MODIFICA****************
+\end{tabular}
+\end{center}
+\newpage
+%************************************************
+%importa i vari indici
+\input{template/index}
+
+%Da qui si può iniziare a scrivere dividendo in section
+
+\end{document}

@@ -1,0 +1,19 @@
+%************************************************
+%Inserisce il link all'indice
+\addcontentsline{toc}{section}{Index}
+\tableofcontents
+\newpage
+
+%se è stata impostata a true la variabile per la lista delle tabelle, la mostra
+\ifthenelse{\equal{\TABLES}{true}} 
+{\listoftables \newpage}{}
+
+%se è stata impostata a true la variabile per la lista delle figure, la mostra
+\ifthenelse{\equal{\FIGURES}{true}}
+{\listoffigures \newpage}{}
+
+%da qui comincia la numerazione normale
+\pagenumbering{arabic}
+
+%imposta il formato di visualizzazione
+\rfoot{\thepage ~of~\pageref{TotPages}}
