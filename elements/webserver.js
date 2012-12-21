@@ -7,8 +7,6 @@ The program is release under the terms of MIT License.
 "use strict";
 
 var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
   , redis = require("redis")

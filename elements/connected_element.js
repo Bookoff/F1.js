@@ -20,12 +20,11 @@ function Element(id){
 		  console.log('connected to redis');
 		});
 
-		var ascoltatore = new ascoltatori.RedisAscoltatore({
+		return new ascoltatori.RedisAscoltatore({
 		  redis: redis,
 		  client_conn : client,
 		  sub_conn: client
 		});
-		return ascoltatore;
 	}
 
 	var createRedisConnection = function(){
