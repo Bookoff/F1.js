@@ -1,0 +1,198 @@
+%**VARIABILI PROGETTO DA MODIFICARE****************************
+
+\def\PROJECT		{F1.js} %Nome del documento, ad esempio: Piano di Progetto
+\def\SUBTITLE		{subtitle}
+
+%Personale
+%se ci sono più persone da indicare scrivere: {nome1, \\&nome2, \\&nome3 ecc..}
+\def\AUTHOR			{\ME}
+
+%Variabili documento
+\def\TABLES		{false} %abilita - disabilita l'indice delle tabelle
+\def\FIGURES	{true} %abilita - disabilita l'indice delle figure
+
+%importa la struttura principale
+\input{template/structure}
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+
+\newpage
+%************************************************
+%importa i vari indici
+\input{template/index}
+%**********   Inizio delle "section"   ********************************
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+
+\hspace{1cm}
+\begin{center}
+\section*{Abstract}
+\end{center}
+In this document I will describe how the F1.js program has been designed and implemented. The programming language chosen for this project is node.js/Javascript, for its particular properties that makes this task a lot easier than in other languages.
+
+With this new technology is possible to do something that requires a great amount of work for other platforms, such as an easy partitioning of the single entities and the ability of create a Desktop or web application in a really simple way.
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+
+\subsection{node.js features}
+
+As said, the project has been written using node.js. Quoting the official site main page: \textit{Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.}\footnote{ Official node.js website: \url{http://www.nodejs.org}}
+
+In other words, it is expressive, in particular with the Express.js framework\footnote{Official Express.js framework website: \url{http://expressjs.com/}}, fast and scalable. 
+
+An important aspect is the use of the V8 JavaScript Engine to interpret the JavaScript code. Written by Google, it increases performance by compiling JavaScript to native machine code (x86, ARM, or MIPS CPUs)\cite{website:v8-intro}, before executing it, versus executing bytecode or interpreting it. Further performance increases are achieved by employing optimization methods such as inline caching.
+
+As you can see in Figure \ref{fig:nodeBench}, this raises a lot the performances, reaching almost the Java's speed.
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[height=150px]{images/node-bench.png}
+\caption{node.js benchmark versus other popular languages/platforms/frameworks}
+\label{fig:nodeBench}
+\end{figure}
+
+However, the performance aren't great only for the use of V8, but also for the programming style that node.js implies.
+
+\subsubsection{Asynchronous I/O}
+\label{sec:async}
+
+node.js real difference is the asynchronous I/O and evented support (C/C++). Citing ``cloudfoundry.com'' \cite{website:cloudfoundry}: \textit{In order to write a fast and scalable server application, we typically end up writing it in a multi-threaded fashion. While you can build great multi-threaded apps in many languages, it usually requires a lot of expertise to build them correctly. On the other hand, these libraries (along with Chrome’s V8 engine) provide a different architecture that hides the complexities of multi-threaded apps while getting the same or better benefits.}
+
+\textit{Let's compare classic multi-threaded server with an evented, non-blocking I/O server:}
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[height=150px]{images/multiThreadedServer.png}
+\caption{An example multi-threaded HTTP server using blocking I/O}
+\label{fig:multiThreadedServer}
+\end{figure}
+
+\textit{The diagram in Figure \ref{fig:multiThreadedServer} depicts a simplified multi-threaded server. There are four users logging into the multi-threaded server. A couple of the users are hitting refresh buttons causing it to use lot of threads. When a request comes in, one of the threads in the thread pool performs that operation, say, a blocking I/O operation. This triggers the OS to perform context switching and run other threads in the thread pool. And after some time, when the I/O is finished, the OS context switches back to the earlier thread to return the result.}
+
+\textit{\textbf{Architecture Summary:} Multi-threaded servers supporting a synchronous, blocking I/O model provide a simpler way of performing I/O. But to handle a heavy load, multi-threaded servers end up using more threads because of the direct association to connections. Supporting more threads causes more memory and higher CPU usage due to more context switching among threads.}
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[height=150px]{images/NodeJS-EventedIOAsyncIO_latest.png}
+\caption{Event-driven, non-blocking I/O (Node.js server)}
+\label{fig:nodejsServer}
+\end{figure}
+
+\textit{The diagram in Figure \ref{fig:nodejsServer} depicts how Node.js server works. At a high level, Node.js server has two parts to it:}
+\begin{itemize}
+\item \textit{At the front, you have Chrome V8 engine (single threaded), event loop and other C/C++ libraries that run your JS code and listen to HTTP/TCP requests;}
+\item \textit{And at the back of the server, you have libuv (includes libio) and other C/C++ libraries that provide asynchronous I/O.}
+\end{itemize}
+
+\textit{Whenever a request is made from a browser, mobile device, etc., the main thread running in the V8 engine checks if it is an I/O. if it is an I/O then it immediately delegates that to the backside (kernel level) of the server where one of the threads in the POSIX thread pool actually makes async I/O. Because the main thread is now free, it starts accepting new requests/events.}
+
+\textit{And at some point when the response comes back from a database or file system, the backend piece generates an event indicating that we have a result from I/O. And when V8 becomes free from what it is currently doing (remember it is single-threaded), it takes the result and returns it to the client.}
+
+\textit{\textbf{Architecture Summary:} This architecture utilizes an event loop (main thread) at the front and performs asynchronous I/O at the kernel level. By not directly associating connections and threads, this model needs only a main event loop thread and many fewer (kernel) threads to perform I/O. Because there are fewer threads and consequently less context-switching, it uses less memory and also less CPU.}
+
+Another important fact to consider about this choice is also then the easiness of programming in node.js instead of Java. Indeed, node.js is deeply and better connected with the mongoDB NoSQL database, that was perfect for this project and this has effected the whole structure of the program, making it a lot easier and straightforward.
+
+\subsection{Difficulties Node.js}
+The main issue with node.js is JavaScript. This language has particular proprieties that are a lot different than what I was used to, in particular Java. I have already program a little in JavaScript, but without using closures, prototypes and asynchronous programming.
+
+The philosophy behind is a lot different, since JavaScript is a weakly object oriented, the opposite of Java. It is also dynamic and has some proprieties of functional languages, for example everything in JavaScript is an object, functions too.
+
+This leads to different design patterns and best practices. Force Java's patters in a JavaScript structure is the wrong way to code in JavaScript.
+
+For this it was really helpful the website \url{http://howtonode.org/} that collects various articles with node.js and JavaScript best practices that help you coding in right way.
+
+Another issue is the continuous change of philosophy. When you are trying to make things work both server-side and client-side you may have to switch continuously from Java to JavaScript and that could make things a bit harder, because the two languages are quite different.
+
+\subsection{Database}
+
+MongoDB (from ``humongous'') is a scalable, high-performance, open source NoSQL database written in C++.
+
+The particularity of MongoDB is that it has a document-oriented storage, in particular it stores BSON documents that are the binary representation of JSON documents.
+
+JSON, acronym for JavaScript Object Notation, has been designed to be as much similar as possible to JavaScript objects. It is now a standard and it is commonly and widely used. So much, that Facebook uses JSON too. in Figure \ref{fig:JSONTrip} you can see how everything in the structure designed simply used JSON Objects. They are managed, changed, stored and got without any conversion from XML, to class-objects, to SQL data or anything similar.
+
+This has a big impact in performace, since MongoDB was designed to be as fast as possible, and to stability, since without any conversion, it is much easier not to have some error in the process.
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[width=\textwidth]{images/JSONTrip.png}
+\caption{How the applications interact with each others, all in JSON}
+\label{fig:JSONTrip}
+\end{figure}
+
+\subsection{Difficulties with MongoDB \& Mongoose}
+I have also dedicated some hours at the study of MongoDB and how to create correctly a database of this type. I was lucky to find the page of the last NoSQL day\footnote{NoSQL day website: \url{http://nosqlday.it/}} with all the speeches given that day. I had a basic knowledge of MongoDB's API but I had no idea of how to model it.
+
+These videos have helped me to create an efficient solution in a quicly way. Solution then I formalized also with the use of Mongoose.
+
+Initially, we used the native driver for MongoDB, not knowing the existence of Mongoose. This was easy to use, but it didn't allows to check if data given are correctly modelled or not. With Mongoose you have this check and you can also set the ``strict'' mode, in order not to insert objects that match the required fields but have also something more than expected.
+
+Furthermore, with MongoDB, the basic rules of E-R modeling, are completely reversed. To cite some meaning considerations about it:
+
+\begin{center}
+	\textit{Data duplication and denormalization are first-class citizens.}\cite{website:nosqldatamodeling}
+\end{center}
+
+This means that, instead of what happends to E-R databases, the focus is not to avoid duplication or denormalization. So, they are allowed and, in some cases, needed and encouraged. There are some cases where E-R databases aren't the best choice. This is because the E-R system is user and answers oriented, as Ilya Katsov says \cite{website:nosqldatamodeling}:
+
+\begin{itemize}
+\item \textit{The end user is often interested in aggregated reporting information, not in separate data items, and SQL pays a lot of attention to this aspect;}
+\item \textit{No one can expect human users to explicitly control concurrency, integrity, consistency, or data type validity. That’s why SQL pays a lot of attention to transactional guaranties, schemas, and referential integrity.}
+\end{itemize}
+
+\begin{center}
+[\dots\unkern]
+\end{center}
+
+\textit{NoSQL data modeling often starts from the application-specific queries as opposed to relational modeling:}
+\begin{itemize}
+\item \textit{Relational modeling is typically driven by the structure of available data. The main design theme is  \textbf{”What answers do I have?”}}
+\item \textit{NoSQL data modeling is typically driven by application-specific access patterns, i.e. the types of queries to be supported. The main design theme is \textbf{”What questions do I have?”}}
+\end{itemize}
+
+So, as you can see, the focus is not to create a database easily consulted by an human being, but to create a model that can scale easily answering as fast as possible to the questions that the program needs. Although the database structure stays clear, updates and transaction should not be done by hand. For example, in this project the login for a player and an uploader is duplicated. This is because every time you need one of them, you shouldn't download two tables but only one.
+
+As Gabriele Lana says \cite{website:mongodbwithstyle}:
+
+\begin{center}
+	\textit{The best design is the one where needed data can be easily extracted}
+\end{center}
+
+\begin{center}
+	\textit{The way you need to query your data should influence your design}
+\end{center}
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[width=\textwidth]{images/mongodbwithstyleafter.png}
+\caption{MongoDB performance analysis of the queries}
+\label{fig:mongodbwithstyle}
+\end{figure}
+
+In Figure \ref{fig:mongodbwithstyle} you can see how you can tune your queries with MongoDB. With this, you can ask the engine to explain how it processes the query, if indexes are being used and how much time is needed to answer the request. You can also set the engine so to log every request that is slower than a given time, to find the queries bad formed, fix them and speed up your application.
+
+
+\section{The problem}
+
+\section{Subproblems analysis}
+
+\section{Solution: the architecture}
+
+\section{How the solution resolves the problem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%BIBLIOGRAPHY
+
+\bibliographystyle{abbrv}
+\bibliography{mybib}
+
+\end{document}
