@@ -1,7 +1,7 @@
 %**VARIABILI PROGETTO DA MODIFICARE****************************
 
 \def\PROJECT		{F1.js} %Nome del documento, ad esempio: Piano di Progetto
-\def\SUBTITLE		{subtitle}
+\def\SUBTITLE		{Formula 1 in a concurrent yet distributed way}
 
 %Personale
 %se ci sono più persone da indicare scrivere: {nome1, \\&nome2, \\&nome3 ecc..}
@@ -15,47 +15,38 @@
 \input{template/structure}
 
 \newpage
-\thispagestyle{empty}
-\mbox{}
-\newpage
-
-\newpage
 %************************************************
 %importa i vari indici
 \input{template/index}
 %**********   Inizio delle "section"   ********************************
 
 \newpage
-\thispagestyle{empty}
-\mbox{}
-\newpage
 
 \hspace{1cm}
 \begin{center}
 \section*{Abstract}
 \end{center}
-In this document I will describe how the F1.js program has been designed and implemented. The programming language chosen for this project is node.js/Javascript, for its particular properties that makes this task a lot easier than in other languages.
+In this document it's described how the F1.js program has been designed and implemented. The programming language chosen for this project is node.js/Javascript, for its particular properties that makes this task a lot easier than in other languages.
 
-With this new technology is possible to do something that requires a great amount of work for other platforms, such as an easy partitioning of the single entities and the ability of create a Desktop or web application in a really simple way.
+With this new technology is possible to do something that requires a great amount of work in an easy way. This could be done also by the fact that in node.js there is no difference between concurrency and distribution, as it will be explained.
 
 \newpage
-\thispagestyle{empty}
-\mbox{}
-\newpage
+\section{The language}
+In order to understand how we solved the problem, is important to give an explanation of how the language, its architecture and its tools are designed. Indeed, this is not a common architecture, although there are similar examples such as Twisted for Python or Event Machine for Ruby.
 
 \subsection{node.js features}
 
-As said, the project has been written using node.js. Quoting the official site main page: \textit{Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.}\footnote{ Official node.js website: \url{http://www.nodejs.org}}
+As said, the project has been written using node.js. Quoting the official site main page: \textit{Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.}\footnote{Official node.js website: \url{http://www.nodejs.org}}
 
 In other words, it is expressive, in particular with the Express.js framework\footnote{Official Express.js framework website: \url{http://expressjs.com/}}, fast and scalable. 
 
-An important aspect is the use of the V8 JavaScript Engine to interpret the JavaScript code. Written by Google, it increases performance by compiling JavaScript to native machine code (x86, ARM, or MIPS CPUs)\cite{website:v8-intro}, before executing it, versus executing bytecode or interpreting it. Further performance increases are achieved by employing optimization methods such as inline caching.
+An important aspect is the use of the V8 JavaScript Engine to interpret the JavaScript code. Written by Google, it increases performance by compiling JavaScript to native machine code (x86, ARM, or MIPS CPUs)\cite{website:v8-intro}, before executing it, versus executing bytecode or interpreting it.
 
-As you can see in Figure \ref{fig:nodeBench}, this raises a lot the performances, reaching almost the Java's speed.
+As you can see in Figure \ref{fig:nodeBench}, this raises a lot the performances, reaching almost Java's speed.
 
 \begin{figure}[H]
 \centering % per centrare l'immagine (opzionale)
-\includegraphics[height=150px]{images/node-bench.png}
+\includegraphics[height=150px]{img/node-bench.png}
 \caption{node.js benchmark versus other popular languages/platforms/frameworks}
 \label{fig:nodeBench}
 \end{figure}
@@ -65,13 +56,13 @@ However, the performance aren't great only for the use of V8, but also for the p
 \subsubsection{Asynchronous I/O}
 \label{sec:async}
 
-node.js real difference is the asynchronous I/O and evented support (C/C++). Citing ``cloudfoundry.com'' \cite{website:cloudfoundry}: \textit{In order to write a fast and scalable server application, we typically end up writing it in a multi-threaded fashion. While you can build great multi-threaded apps in many languages, it usually requires a lot of expertise to build them correctly. On the other hand, these libraries (along with Chrome’s V8 engine) provide a different architecture that hides the complexities of multi-threaded apps while getting the same or better benefits.}
+node.js real difference is the asynchronous I/O and evented support. Citing ``cloudfoundry.com'' \cite{website:cloudfoundry}: \textit{In order to write a fast and scalable server application, we typically end up writing it in a multi-threaded fashion. While you can build great multi-threaded apps in many languages, it usually requires a lot of expertise to build them correctly. On the other hand, these libraries (along with Chrome’s V8 engine) provide a different architecture that hides the complexities of multi-threaded apps while getting the same or better benefits.}
 
 \textit{Let's compare classic multi-threaded server with an evented, non-blocking I/O server:}
 
 \begin{figure}[H]
 \centering % per centrare l'immagine (opzionale)
-\includegraphics[height=150px]{images/multiThreadedServer.png}
+\includegraphics[height=150px]{img/multiThreadedServer.png}
 \caption{An example multi-threaded HTTP server using blocking I/O}
 \label{fig:multiThreadedServer}
 \end{figure}
@@ -82,7 +73,7 @@ node.js real difference is the asynchronous I/O and evented support (C/C++). Cit
 
 \begin{figure}[H]
 \centering % per centrare l'immagine (opzionale)
-\includegraphics[height=150px]{images/NodeJS-EventedIOAsyncIO_latest.png}
+\includegraphics[height=150px]{img/NodeJS-EventedIOAsyncIO_latest.png}
 \caption{Event-driven, non-blocking I/O (Node.js server)}
 \label{fig:nodejsServer}
 \end{figure}
@@ -99,18 +90,30 @@ node.js real difference is the asynchronous I/O and evented support (C/C++). Cit
 
 \textit{\textbf{Architecture Summary:} This architecture utilizes an event loop (main thread) at the front and performs asynchronous I/O at the kernel level. By not directly associating connections and threads, this model needs only a main event loop thread and many fewer (kernel) threads to perform I/O. Because there are fewer threads and consequently less context-switching, it uses less memory and also less CPU.}
 
-Another important fact to consider about this choice is also then the easiness of programming in node.js instead of Java. Indeed, node.js is deeply and better connected with the mongoDB NoSQL database, that was perfect for this project and this has effected the whole structure of the program, making it a lot easier and straightforward.
+\subsection{Synchronous versus Asynchronous}
 
-\subsection{Difficulties Node.js}
-The main issue with node.js is JavaScript. This language has particular proprieties that are a lot different than what I was used to, in particular Java. I have already program a little in JavaScript, but without using closures, prototypes and asynchronous programming.
+We have seen why an asynchronous webserver is a lot faster than a synchronous one. The fact is that performances might not be so interesting, such as in this situation, but might be more interesting the easiness of designing and implementing the solution.
 
-The philosophy behind is a lot different, since JavaScript is a weakly object oriented, the opposite of Java. It is also dynamic and has some proprieties of functional languages, for example everything in JavaScript is an object, functions too.
+As said concurrency and distribution in node.js are the exact same thing. The reality indeed is that node.js is (mainly) single-threaded as seen before, handling everything with events. For this reason there isn't the concept of ``lock'' in node.js or of threads. It's possible to use webworkers that are evented processes that you can create forking the single-thread but are heavy and usually not needed, like in this case.
 
-This leads to different design patterns and best practices. Force Java's patters in a JavaScript structure is the wrong way to code in JavaScript.
+So, when you have the application that waits for an event, it's of no importance to know if the event is generated in the client, in the server or in another server. The important thing is to be subscribed to the right event emitter, and this can be easily done and changed, even at run-time.
 
-For this it was really helpful the website \url{http://howtonode.org/} that collects various articles with node.js and JavaScript best practices that help you coding in right way.
+In this way, we can run the program in a single instance on a server, in multiple processes in a single server or even split the processes in different servers without affecting the logic of the application at all. This means that we can partition vertically every single event emitter, if we want. This is a lot more scalable than rewriting the whole application or to adapt it in both cases.
 
-Another issue is the continuous change of philosophy. When you are trying to make things work both server-side and client-side you may have to switch continuously from Java to JavaScript and that could make things a bit harder, because the two languages are quite different.
+\subsection{node.js versus Twisted and Event Machine}
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[height=250px]{img/express.png}
+\caption{Express and socket.io model}
+\label{fig:expressSocketio}
+\end{figure}
+
+Basically the great advantage of node.js is the use of the JavaScript language. The reason is that all the libraries already written for the JavaScript language are asynchronous, since it's how JavaScript has been always be, while Python and Ruby has a lot of synchronous libraries that you cannot use inside these two asynchronous environments.
+
+Another important fact is that now JavaScript is an isomorphic language.\textit{By isomorphic we mean that any given line of code (with notable exceptions) can execute both on the client and the server.}\cite{website:isomorfic}
+
+This seems trivial but it's not. Indeed we can easily communicate between client and server in a single language using events and not RMI or RPC. We can indeed write the same library for the client and the server and validate the data in each step to prevent code changes. We have no mind-switch from one language to another and the application can avoid to decouple in a strictly way view from controller from model, since the client-server limit is not so strict as in other contexts.
 
 \subsection{Database}
 
@@ -124,7 +127,7 @@ This has a big impact in performace, since MongoDB was designed to be as fast as
 
 \begin{figure}[H]
 \centering % per centrare l'immagine (opzionale)
-\includegraphics[width=\textwidth]{images/JSONTrip.png}
+\includegraphics[width=\textwidth]{img/JSONTrip.png}
 \caption{How the applications interact with each others, all in JSON}
 \label{fig:JSONTrip}
 \end{figure}
@@ -171,14 +174,8 @@ As Gabriele Lana says \cite{website:mongodbwithstyle}:
 	\textit{The way you need to query your data should influence your design}
 \end{center}
 
-\begin{figure}[H]
-\centering % per centrare l'immagine (opzionale)
-\includegraphics[width=\textwidth]{images/mongodbwithstyleafter.png}
-\caption{MongoDB performance analysis of the queries}
-\label{fig:mongodbwithstyle}
-\end{figure}
 
-In Figure \ref{fig:mongodbwithstyle} you can see how you can tune your queries with MongoDB. With this, you can ask the engine to explain how it processes the query, if indexes are being used and how much time is needed to answer the request. You can also set the engine so to log every request that is slower than a given time, to find the queries bad formed, fix them and speed up your application.
+In Figure you can see how you can tune your queries with MongoDB. With this, you can ask the engine to explain how it processes the query, if indexes are being used and how much time is needed to answer the request. You can also set the engine so to log every request that is slower than a given time, to find the queries bad formed, fix them and speed up your application.
 
 
 \section{The problem}
