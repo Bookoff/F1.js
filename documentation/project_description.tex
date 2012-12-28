@@ -90,17 +90,25 @@ node.js real difference is the asynchronous I/O and evented support. Citing ``cl
 
 \textit{\textbf{Architecture Summary:} This architecture utilizes an event loop (main thread) at the front and performs asynchronous I/O at the kernel level. By not directly associating connections and threads, this model needs only a main event loop thread and many fewer (kernel) threads to perform I/O. Because there are fewer threads and consequently less context-switching, it uses less memory and also less CPU.}
 
-\subsection{Synchronous versus Asynchronous}
+\subsection{Concurrency and distribution in node.js}
 
-We have seen why an asynchronous webserver is a lot faster than a synchronous one. The fact is that performances might not be so interesting, such as in this situation, but might be more interesting the easiness of designing and implementing the solution.
+We have seen why an asynchronous webserver is a lot faster than a synchronous one. The fact is that performances might not be so interesting, as in this situation, but might be more interesting the easiness of designing and implementing the solution.
 
-As said concurrency and distribution in node.js are the exact same thing. The reality indeed is that node.js is (mainly) single-threaded as seen before, handling everything with events. For this reason there isn't the concept of ``lock'' in node.js or of threads. It's possible to use webworkers that are evented processes that you can create forking the single-thread but are heavy and usually not needed, like in this case.
+As said concurrency and distribution in node.js are the exact same thing. The reality indeed is that node.js is (mainly) single-threaded as seen before, handling everything with events. For this reason there isn't the concept of ``lock'' in node.js or of threads. It's possible to use webworkers that are processes that you can create forking the single-thread but are heavy and usually not needed, like in this case. They are needed only in cases of CPU-intensive tasks that might block the main thread from answering the events that it gets.
 
 So, when you have the application that waits for an event, it's of no importance to know if the event is generated in the client, in the server or in another server. The important thing is to be subscribed to the right event emitter, and this can be easily done and changed, even at run-time.
 
 In this way, we can run the program in a single instance on a server, in multiple processes in a single server or even split the processes in different servers without affecting the logic of the application at all. This means that we can partition vertically every single event emitter, if we want. This is a lot more scalable than rewriting the whole application or to adapt it in both cases.
 
 \subsection{node.js versus Twisted and Event Machine}
+
+Basically the great advantage of node.js is the use of the JavaScript language. The reason is that all the libraries already written for the JavaScript language are asynchronous, since it's how JavaScript has been designed, while Python and Ruby has a lot of synchronous libraries that you cannot use inside these two asynchronous environments.
+
+Another important fact is that now JavaScript is an isomorphic language.\textit{By isomorphic we mean that any given line of code (with notable exceptions) can execute both on the client and the server.}\cite{website:isomorfic}
+
+This seems trivial but it's not. Indeed we can easily communicate between client and server in a single language using events and not RMI or RPC. We can indeed write the same library for the client and the server and validate the data in each step to prevent code changes. We have no mind-switch from one language to another and the application can avoid to decouple in a strictly way view from controller from model, since the client-server limit is not so strict as in other contexts.
+
+\subsection{socket.io, ascoltatori and redis}
 
 \begin{figure}[H]
 \centering % per centrare l'immagine (opzionale)
@@ -109,74 +117,23 @@ In this way, we can run the program in a single instance on a server, in multipl
 \label{fig:expressSocketio}
 \end{figure}
 
-Basically the great advantage of node.js is the use of the JavaScript language. The reason is that all the libraries already written for the JavaScript language are asynchronous, since it's how JavaScript has been always be, while Python and Ruby has a lot of synchronous libraries that you cannot use inside these two asynchronous environments.
+In Figure \ref{fig:expressSocketio} you can see how the framework used and socket.io work. They are really simple and neat. Express has only the job to answer the web requests and render the HTML pages. Socket.io is a wrapper over the websocket technology.
 
-Another important fact is that now JavaScript is an isomorphic language.\textit{By isomorphic we mean that any given line of code (with notable exceptions) can execute both on the client and the server.}\cite{website:isomorfic}
-
-This seems trivial but it's not. Indeed we can easily communicate between client and server in a single language using events and not RMI or RPC. We can indeed write the same library for the client and the server and validate the data in each step to prevent code changes. We have no mind-switch from one language to another and the application can avoid to decouple in a strictly way view from controller from model, since the client-server limit is not so strict as in other contexts.
-
-\subsection{Database}
-
-MongoDB (from ``humongous'') is a scalable, high-performance, open source NoSQL database written in C++.
-
-The particularity of MongoDB is that it has a document-oriented storage, in particular it stores BSON documents that are the binary representation of JSON documents.
-
-JSON, acronym for JavaScript Object Notation, has been designed to be as much similar as possible to JavaScript objects. It is now a standard and it is commonly and widely used. So much, that Facebook uses JSON too. in Figure \ref{fig:JSONTrip} you can see how everything in the structure designed simply used JSON Objects. They are managed, changed, stored and got without any conversion from XML, to class-objects, to SQL data or anything similar.
-
-This has a big impact in performace, since MongoDB was designed to be as fast as possible, and to stability, since without any conversion, it is much easier not to have some error in the process.
-
-\begin{figure}[H]
-\centering % per centrare l'immagine (opzionale)
-\includegraphics[width=\textwidth]{img/JSONTrip.png}
-\caption{How the applications interact with each others, all in JSON}
-\label{fig:JSONTrip}
-\end{figure}
-
-\subsection{Difficulties with MongoDB \& Mongoose}
-I have also dedicated some hours at the study of MongoDB and how to create correctly a database of this type. I was lucky to find the page of the last NoSQL day\footnote{NoSQL day website: \url{http://nosqlday.it/}} with all the speeches given that day. I had a basic knowledge of MongoDB's API but I had no idea of how to model it.
-
-These videos have helped me to create an efficient solution in a quicly way. Solution then I formalized also with the use of Mongoose.
-
-Initially, we used the native driver for MongoDB, not knowing the existence of Mongoose. This was easy to use, but it didn't allows to check if data given are correctly modelled or not. With Mongoose you have this check and you can also set the ``strict'' mode, in order not to insert objects that match the required fields but have also something more than expected.
-
-Furthermore, with MongoDB, the basic rules of E-R modeling, are completely reversed. To cite some meaning considerations about it:
-
-\begin{center}
-	\textit{Data duplication and denormalization are first-class citizens.}\cite{website:nosqldatamodeling}
-\end{center}
-
-This means that, instead of what happends to E-R databases, the focus is not to avoid duplication or denormalization. So, they are allowed and, in some cases, needed and encouraged. There are some cases where E-R databases aren't the best choice. This is because the E-R system is user and answers oriented, as Ilya Katsov says \cite{website:nosqldatamodeling}:
-
+\textbf{Socket.io} solves a lot of problems that occurs if you use the websocket technology as it is. What socket.io handles is:
 \begin{itemize}
-\item \textit{The end user is often interested in aggregated reporting information, not in separate data items, and SQL pays a lot of attention to this aspect;}
-\item \textit{No one can expect human users to explicitly control concurrency, integrity, consistency, or data type validity. That’s why SQL pays a lot of attention to transactional guaranties, schemas, and referential integrity.}
+\item the connection. Websocket is a modern technology that is not allowed in old browsers. This library overcomes this problem using different technologies using the fastest available. From using Flash to return to the AJAX long-polling technology;
+\item the re-connections without creating different instances but reusing the same instance that there were before the disconnection;
+\item the send of JSON objects instead of plain text;
+\item the namespaces. In this way you can have a single websocket connection but using different namespaces to divide different parts of the logic.
 \end{itemize}
 
-\begin{center}
-[\dots\unkern]
-\end{center}
+In this way, we are totally unaware of the underline problems of the network and we can handle the problem in a lot easier way.
 
-\textit{NoSQL data modeling often starts from the application-specific queries as opposed to relational modeling:}
-\begin{itemize}
-\item \textit{Relational modeling is typically driven by the structure of available data. The main design theme is  \textbf{”What answers do I have?”}}
-\item \textit{NoSQL data modeling is typically driven by application-specific access patterns, i.e. the types of queries to be supported. The main design theme is \textbf{”What questions do I have?”}}
-\end{itemize}
+\textbf{Ascoltatori} is another really useful wrapper library. It is really interesting since it made a lot easier and transparent the communication server to server. Indeed it wraps a lot of ways to communicate, in particular: Redis, AMPQ (RabbitMQ), ZeroMQ, MQTT (Mosquitto) or just plain node.
 
-So, as you can see, the focus is not to create a database easily consulted by an human being, but to create a model that can scale easily answering as fast as possible to the questions that the program needs. Although the database structure stays clear, updates and transaction should not be done by hand. For example, in this project the login for a player and an uploader is duplicated. This is because every time you need one of them, you shouldn't download two tables but only one.
+In this way, we can have with no problems a node of the network written in C++ with ZeroMQ and use this library to make everything work without a change in the code.
 
-As Gabriele Lana says \cite{website:mongodbwithstyle}:
-
-\begin{center}
-	\textit{The best design is the one where needed data can be easily extracted}
-\end{center}
-
-\begin{center}
-	\textit{The way you need to query your data should influence your design}
-\end{center}
-
-
-In Figure you can see how you can tune your queries with MongoDB. With this, you can ask the engine to explain how it processes the query, if indexes are being used and how much time is needed to answer the request. You can also set the engine so to log every request that is slower than a given time, to find the queries bad formed, fix them and speed up your application.
-
+Of the choices given, we choose \textbf{Redis} because it is also a database and in this way we can use only one technology. The service used is redistogo, that is an online storage service (it would work in local too, anyway).
 
 \section{The problem}
 
