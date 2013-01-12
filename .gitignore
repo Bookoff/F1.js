@@ -8,8 +8,10 @@ lib-cov
 *.gz
 *.aux
 *.lof
-*.synctex.gz
 *.toc
+*.bbl
+*.blg
+*.synctex.gz
 
 
 pids

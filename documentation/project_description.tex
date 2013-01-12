@@ -106,7 +106,7 @@ Basically the great advantage of node.js is the use of the JavaScript language. 
 
 Another important fact is that now JavaScript is an isomorphic language.\textit{By isomorphic we mean that any given line of code (with notable exceptions) can execute both on the client and the server.}\cite{website:isomorfic}
 
-This seems trivial but it's not. Indeed we can easily communicate between client and server in a single language using events and not RMI or RPC. We can indeed write the same library for the client and the server and validate the data in each step to prevent code changes. We have no mind-switch from one language to another and the application can avoid to decouple in a strictly way view from controller from model, since the client-server limit is not so strict as in other contexts.
+This seems trivial but it's not. Indeed we can easily communicate between client and server in a single language using events and, if needed, RPC. We can indeed write the same library for the client and the server and validate the data in each step to prevent code changes. We have no mind-switch from one language to another and the application can avoid to decouple in a strictly way view from controller from model, since the client-server limit is not so strict as in other contexts.
 
 \subsection{socket.io, ascoltatori and redis}
 
@@ -129,13 +129,17 @@ In Figure \ref{fig:expressSocketio} you can see how the framework used and socke
 
 In this way, we are totally unaware of the underline problems of the network and we can handle the problem in a lot easier way.
 
+It allows you also to pass pointers to functions that are executed in the context of definition. In this way you can simulate a Remote Procedure Call, if needed, without loosing transparency at all since it's all asynchronous. In this way, you don't need to handle problems regarding the proxy/skeleton pattern.
+
 \textbf{Ascoltatori} is another really useful wrapper library. It is really interesting since it made a lot easier and transparent the communication server to server. Indeed it wraps a lot of ways to communicate, in particular: Redis, AMPQ (RabbitMQ), ZeroMQ, MQTT (Mosquitto) or just plain node.
 
 In this way, we can have with no problems a node of the network written in C++ with ZeroMQ and use this library to make everything work without a change in the code.
 
-Of the choices given, we choose \textbf{Redis} because it is also a database and in this way we can use only one technology. The service used is redistogo, that is an online storage service (it would work in local too, anyway).
+Of the choices given, we choose \textbf{Redis} because it ``is a database, but it would be more accurately described as a datastructure server'' \cite{book:smashing}. In this way we can use only one technology. The service used is redistogo, that is an online storage service (it would work in local too, anyway).
 
 \section{The problem}
+
+To analyse the problem we have chosen to describe it through UML-schemas in order to have a clear path to follow. Then, each we have studied how to solve every subproblem emerged during the schema creation.
 
 \section{Subproblems analysis}
 
