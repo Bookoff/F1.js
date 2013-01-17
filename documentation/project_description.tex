@@ -1,8 +1,6 @@
 %**VARIABILI PROGETTO DA MODIFICARE****************************
 
 \def\PROJECT		{F1.js} %Nome del documento, ad esempio: Piano di Progetto
-\def\SUBTITLE		{Formula 1 in a concurrent yet distributed way}
-
 %Personale
 %se ci sono più persone da indicare scrivere: {nome1, \\&nome2, \\&nome3 ecc..}
 \def\AUTHOR			{\ME}
@@ -22,13 +20,14 @@
 
 \newpage
 
-\hspace{1cm}
 \begin{center}
 \section*{Abstract}
 \end{center}
-In this document it's described how the F1.js program has been designed and implemented. The programming language chosen for this project is node.js/Javascript, for its particular properties that makes this task a lot easier than in other languages.
+In this document is described how the F1.js program has been designed and implemented. It is a project developed for the ``Concurrent and distributed systems'' exam, matching the requirements that can be found at: \url{http://www.math.unipd.it/~tullio/SCD/2008/Progetto.html}
 
-With this new technology is possible to do something that requires a great amount of work in an easy way. This could be done also by the fact that in node.js there is no difference between concurrency and distribution, as it will be explained.
+ The programming language chosen for this project is Javascript/node.js, for its particular properties that makes this task a lot easier than in other languages.
+
+This is accomplished by the fact that in node.js there is no difference between concurrency and distribution, as it will be explained.
 
 \newpage
 \section{The language}
@@ -36,7 +35,7 @@ In order to understand how we solved the problem, is important to give an explan
 
 \subsection{node.js features}
 
-As said, the project has been written using node.js. Quoting the official site main page: \textit{Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.}\footnote{Official node.js website: \url{http://www.nodejs.org}}
+As said, the project has been written using node.js. Quoting the official site's main page: \textit{Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.}\footnote{Official node.js website: \url{http://www.nodejs.org}}
 
 In other words, it is expressive, in particular with the Express.js framework\footnote{Official Express.js framework website: \url{http://expressjs.com/}}, fast and scalable. 
 
@@ -102,7 +101,7 @@ In this way, we can run the program in a single instance on a server, in multipl
 
 \subsection{node.js versus Twisted and Event Machine}
 
-Basically the great advantage of node.js is the use of the JavaScript language. The reason is that all the libraries already written for the JavaScript language are asynchronous, since it's how JavaScript has been designed, while Python and Ruby has a lot of synchronous libraries that you cannot use inside these two asynchronous environments.
+Basically the great advantage of node.js is the use of the JavaScript language. The reason is that all the libraries already written for the JavaScript language are asynchronous, since it's how JavaScript has been designed, while Python and Ruby have a lot of synchronous libraries that you cannot use inside these two asynchronous environments.
 
 Another important fact is that now JavaScript is an isomorphic language.\textit{By isomorphic we mean that any given line of code (with notable exceptions) can execute both on the client and the server.}\cite{website:isomorfic}
 
@@ -121,31 +120,89 @@ In Figure \ref{fig:expressSocketio} you can see how the framework used and socke
 
 \textbf{Socket.io} solves a lot of problems that occurs if you use the websocket technology as it is. What socket.io handles is:
 \begin{itemize}
-\item the connection. Websocket is a modern technology that is not allowed in old browsers. This library overcomes this problem using different technologies using the fastest available. From using Flash to return to the AJAX long-polling technology;
+\item the connection. Websocket is a modern technology that is not available in old browsers. This library overcomes this problem using different technologies using the fastest possible. In this way it degradates gracefully from Websocket to Flash or even the AJAX long-polling technology;
 \item the re-connections without creating different instances but reusing the same instance that there were before the disconnection;
 \item the send of JSON objects instead of plain text;
 \item the namespaces. In this way you can have a single websocket connection but using different namespaces to divide different parts of the logic.
 \end{itemize}
 
-In this way, we are totally unaware of the underline problems of the network and we can handle the problem in a lot easier way.
+In this way, we are totally unaware of the underlining problems of the network and we can handle the problem in a lot easier way.
 
 It allows you also to pass pointers to functions that are executed in the context of definition. In this way you can simulate a Remote Procedure Call, if needed, without loosing transparency at all since it's all asynchronous. In this way, you don't need to handle problems regarding the proxy/skeleton pattern.
 
-\textbf{Ascoltatori} is another really useful wrapper library. It is really interesting since it made a lot easier and transparent the communication server to server. Indeed it wraps a lot of ways to communicate, in particular: Redis, AMPQ (RabbitMQ), ZeroMQ, MQTT (Mosquitto) or just plain node.
+\textbf{Ascoltatori} is another really useful wrapper library. It is really interesting since it makes a lot easier and transparent the communication server to server. Indeed it wraps a lot of ways to communicate, in particular: Redis, AMPQ (RabbitMQ), ZeroMQ, MQTT (Mosquitto) or just plain node.js.
 
-In this way, we can have with no problems a node of the network written in C++ with ZeroMQ and use this library to make everything work without a change in the code.
+In this way, we can have for example a node of the network written in C++ with ZeroMQ and use this library to make everything work without changing a line of code.
 
-Of the choices given, we choose \textbf{Redis} because it ``is a database, but it would be more accurately described as a datastructure server'' \cite{book:smashing}. In this way we can use only one technology. The service used is redistogo, that is an online storage service (it would work in local too, anyway).
+We choose \textbf{Redis} because it ``is a database, but it would be more accurately described as a datastructure server'' \cite{book:smashing}. In this way we can use only one technology both for communication and storage. Instead of setup a Redis instance, we choose to use redistogo, that is an online storage service (it would work in local too, anyway).
 
 \section{The problem}
 
-To analyse the problem we have chosen to describe it through UML-schemas in order to have a clear path to follow. Then, each we have studied how to solve every subproblem emerged during the schema creation.
+To analyse the problem we have chosen to describe it through UML-schemas in order to have a clear path to follow.
 
-\section{Subproblems analysis}
+\subsection{F1.js}
 
-\section{Solution: the architecture}
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[height=250px]{./UML/F1Js.png}
+\caption{F1.js - the system}
+\label{fig:F1jsUC}
+\end{figure}
 
-\section{How the solution resolves the problem}
+In Figure \ref{fig:F1jsUC} is described the problem divided in its 3 main parts: the game simulation, the administration panel and the control system.
+
+The normal user can enter the game simulation and view the control system with the status of the simulation. Only the administrator can change some of the game settings.
+
+\subsection{The Game Simulation}
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[width=0.8\textwidth]{./UML/GameSimulation.png}
+\caption{The Game Simulation}
+\label{fig:GameSimulation}
+\end{figure}
+
+When a new user connects to the system, she can decide what car and which player to play with. If she doesn't want, she can let the default parameters. Finally, she can decide to view or to take part to the current race. If there are already enough player, the race begins and every new player can only watch the competition.
+
+\subsection{The Administration Panel}
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[width=0.8\textwidth]{./UML/AdministrationPanel.png}
+\caption{The Administration Panel}
+\label{fig:AdministrationPanel}
+\end{figure}
+
+In Figure \ref{fig:AdministrationPanel} there is the panel where the administrator can change some parameters of the simulation. The administrator can:
+\begin{itemize}
+\item create a new driver or change the parameters of an old one;
+\item create a new circuit or change the parameters of a circuit already inserted;
+\item select the race laps for the next race;
+\item select the circuit of the next race.
+\end{itemize}
+
+\subsection{The Control System}
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[width=0.8\textwidth]{./UML/ControlSystem.png}
+\caption{The Control System}
+\label{fig:ControlSystem}
+\end{figure}
+
+In Figure \ref{fig:ControlSystem} is described the control system. Every user can view:
+\begin{itemize}
+\item the competition's status;
+\item the best performance until now;
+\item the player's status.
+\end{itemize}
+
+
+%\section{Subproblems analysis}
+
+%\section{Solution: the architecture}
+
+%\section{How the solution resolves the problem}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %BIBLIOGRAPHY
