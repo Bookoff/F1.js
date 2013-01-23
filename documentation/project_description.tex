@@ -42,16 +42,7 @@ In other words, it is expressive, in particular with the Express.js framework\fo
 
 An important aspect is the use of the V8 JavaScript Engine to interpret the JavaScript code. Written by Google, it increases performance by compiling JavaScript to native machine code (x86, ARM, or MIPS CPUs)\cite{website:v8-intro}, before executing it, versus executing bytecode or interpreting it.
 
-As you can see in Figure \ref{fig:nodeBench}, this raises a lot the performances, reaching almost Java's speed.
-
-\begin{figure}[H]
-\centering % per centrare l'immagine (opzionale)
-\includegraphics[height=150px]{img/node-bench.png}
-\caption{node.js benchmark versus other popular languages/platforms/frameworks}
-\label{fig:nodeBench}
-\end{figure}
-
-However, the performance aren't great only for the use of V8, but also for the programming style that node.js implies.
+Performances aren't great only for the use of V8, but also for the programming style that node.js implies.
 
 \subsubsection{Asynchronous I/O}
 \label{sec:async}
@@ -117,14 +108,14 @@ This seems trivial but it's not. Indeed we can easily communicate between client
 \label{fig:expressSocketio}
 \end{figure}
 
-In Figure \ref{fig:expressSocketio} you can see how the framework used and socket.io work. They are really simple and neat. Express has only the job to answer the web requests and render the HTML pages. Socket.io is a wrapper over the websocket technology.
+In Figure \ref{fig:expressSocketio} you can see how the framework used and socket.io work. They are really simple and neat. Express has only the job to answer the web requests and render the HTML pages. Socket.io is a wrapper over the WebSocket technology.
 
-\textbf{Socket.io} solves a lot of problems that occurs if you use the websocket technology as it is. What socket.io handles is:
+\textbf{Socket.io} solves a lot of problems that occurs if you use the WebSocket technology as it is. What socket.io handles is:
 \begin{itemize}
-\item the connection. Websocket is a modern technology that is not available in old browsers. This library overcomes this problem using different technologies using the fastest possible. In this way it degradates gracefully from Websocket to Flash or even the AJAX long-polling technology;
+\item the connection. WebSocket is a modern technology that is not available in old browsers. This library overcomes this problem using different technologies using the fastest possible. In this way it degradates gracefully from WebSocket to Flash or even the AJAX long-polling technology;
 \item the re-connections without creating different instances but reusing the same instance that there were before the disconnection;
 \item the send of JSON objects instead of plain text;
-\item the namespaces. In this way you can have a single websocket connection but using different namespaces to divide different parts of the logic.
+\item the namespaces. In this way you can have a single WebSocket connection but using different namespaces to divide different parts of the logic.
 \end{itemize}
 
 In this way, we are totally unaware of the underlining problems of the network and we can handle the problem in a lot easier way.
@@ -265,9 +256,43 @@ This can be easily done settings a flag, since the communication instead of bein
 
 The World represents the circuit, the boxes, the cars and the players. As we have said, the world could be both on the server (Figure \ref{fig:entities}) or on the client (Figure \ref{fig:entitiesMagicClient}). It can be also distributed as a separate process on the same server or in another server at all. Since every parts of it are connected through Ascoltatori, every parts of it can be distributed easily to other servers.
 
-We can decide to distribute also some part of the World in one or in every client. For example, we can choose to move every car simulation to its client, the same for the boxes. This howevery, will increase the fragility of the system, the security, the lags of the system and the communication overhead between the clients and the server for  syncing the entities.
+We can decide to distribute also some part of the World in one or in every client. For example, we can choose to move every car simulation to its client, the same for the boxes. This however, will increase the fragility of the system, the security, the lags of the system and the communication overhead between the clients and the server for  syncing the entities.
 
 For this reason, the proposed solution has every entity in the server, although as said this configuration can be easily changed.
+
+\section{Loading and Monitor}
+
+Every simulation needs a loading time. In this time, the simulator (that in the default situation is the server) needs to retrieve the data, start the simulation and then send the output to every monitor that has then the duty to reproduce it.
+
+According to the configuration selected, the time needed may vary and may occurs problems, if some nodes go down (in particular if we choose to distribute the cars too or using a client as host).
+
+This process can be done in real-time too, however this will lead to lags or errors in the simulation, reducing its quality. For this reason, since the user's input is not provided, we have decided to proceed in this way.
+
+\section{Artificial Intelligence}
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[width=0.8\textwidth]{./img/overtaking.jpg}
+\caption{A slot car overtaking}
+\label{fig:overtaking}
+\end{figure}
+
+In Figure \ref{fig:overtaking} we can see a step car race. Slot cars are machines that runes in a circuit, like the one that we have to simulate, that can run only in a defined slot with the circuit itself. It is interesting to notate that, to overtake an opponent, the two cars have to be in different slots, otherwise they will crash.
+
+In some competitions, every car is in a different slot, so the overtake is just natural when a car runs faster than the other. However, since this will make the simulation not so effective, we have decided to simulate the race with a different type of track.
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[width=150px]{./img/switcher.jpg}
+\caption{A switcher track}
+\label{fig:switcher}
+\end{figure}
+
+In Figure \ref{fig:switcher} we can see a \textit{switcher}. With this term we mean a particular track that allows machines to change their slot. In this way, cars can't simply change slot when they want, but they have to wait for this sort of \textit{interrupt}. 
+
+As for embedded real-time systems, this will lead to a big simplification of the logic and of the connections. Indeed, we haven't to check in every instance where the other cars are (that may be a costs in terms of lags, if the cars are distributed) but only when we receive this sort of interrupt. This is also much more interesting, since it is easier that crashes occurs and the cars has to handle it correctly.
+
+To not complicate things too much, every switcher allows every car to move to every narrow slot (i.e. if the car is in slot 1, it can move to slot 2 but not to slot 3 since it is too far).
 
 \appendix
 \section{Installation}
@@ -276,7 +301,7 @@ It is really basic to install the program. The first thing to do, is to download
 
 Once the code is downloaded, you have to install node.js and npm (that usually comes with node.js). We relate to the official site for further details.\footnote{node.js official site: \url{http://nodejs.org/}}
 
-The first thing to do, is to setup the redis database. It can be locally available or on a redistogo instance. Once you have chosen what to use, you have to create the ``settings.json'' file with your settings.
+The first thing to do, is to setup the redis database. It can be locally available or on a redistogo instance. Once you have chosen what to use, you have to create the ``settings.js'' file with your settings.
 
 After that, you have to open the shell in the source folder and type ``npm install''. This would install every node package needed. To run the server, just type ``node app.js'' and go to ``localhost:3000'' with your browser to see the program running. You can open multiple tabs on the same site to simulate multiple clients.
 
