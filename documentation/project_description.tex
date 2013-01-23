@@ -1,9 +1,10 @@
 %**VARIABILI PROGETTO DA MODIFICARE****************************
 
-\def\PROJECT		{F1.js} %Nome del documento, ad esempio: Piano di Progetto
+\def\PROJECT			{F1.js} %Nome del documento, ad esempio: Piano di Progetto
 %Personale
 %se ci sono più persone da indicare scrivere: {nome1, \\&nome2, \\&nome3 ecc..}
 \def\AUTHOR			{\ME}
+\def\REPOurl		{https://github.com/filnik/F1.js}
 
 %Variabili documento
 \def\TABLES		{false} %abilita - disabilita l'indice delle tabelle
@@ -137,6 +138,7 @@ In this way, we can have for example a node of the network written in C++ with Z
 We choose \textbf{Redis} because it ``is a database, but it would be more accurately described as a datastructure server'' \cite{book:smashing}. In this way we can use only one technology both for communication and storage. Instead of setup a Redis instance, we choose to use redistogo, that is an online storage service (it would work in local too, anyway).
 
 \section{The problem}
+\label{sec:theProblem}
 
 To analyse the problem we have chosen to describe it through UML-schemas in order to have a clear path to follow.
 
@@ -144,7 +146,7 @@ To analyse the problem we have chosen to describe it through UML-schemas in orde
 
 \begin{figure}[H]
 \centering % per centrare l'immagine (opzionale)
-\includegraphics[height=250px]{./UML/F1Js.png}
+\includegraphics[height=250px]{./img/UML/F1Js.png}
 \caption{F1.js - the system}
 \label{fig:F1jsUC}
 \end{figure}
@@ -157,7 +159,7 @@ The normal user can enter the game simulation and view the control system with t
 
 \begin{figure}[H]
 \centering % per centrare l'immagine (opzionale)
-\includegraphics[width=0.8\textwidth]{./UML/GameSimulation.png}
+\includegraphics[width=0.6\textwidth]{./img/UML/GameSimulation.png}
 \caption{The Game Simulation}
 \label{fig:GameSimulation}
 \end{figure}
@@ -168,7 +170,7 @@ When a new user connects to the system, she can decide what car and which player
 
 \begin{figure}[H]
 \centering % per centrare l'immagine (opzionale)
-\includegraphics[width=0.8\textwidth]{./UML/AdministrationPanel.png}
+\includegraphics[width=0.6\textwidth]{./img/UML/AdministrationPanel.png}
 \caption{The Administration Panel}
 \label{fig:AdministrationPanel}
 \end{figure}
@@ -185,7 +187,7 @@ In Figure \ref{fig:AdministrationPanel} there is the panel where the administrat
 
 \begin{figure}[H]
 \centering % per centrare l'immagine (opzionale)
-\includegraphics[width=0.8\textwidth]{./UML/ControlSystem.png}
+\includegraphics[width=0.6\textwidth]{./img/UML/ControlSystem.png}
 \caption{The Control System}
 \label{fig:ControlSystem}
 \end{figure}
@@ -197,6 +199,86 @@ In Figure \ref{fig:ControlSystem} is described the control system. Every user ca
 \item the player's status.
 \end{itemize}
 
+\section{System Analysis}
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[width=0.8\textwidth]{./img/SystemAnalysis/Entities.png}
+\caption{Main system's entities}
+\label{fig:entities}
+\end{figure}
+
+In Figure \ref{fig:entities} is described the main system architecture proposed. There are some clients that connects through a web browser to the website and one, or more, servers that handle the requests.
+
+\subsection{Client}
+
+In our system, the clients are monitors and can do the action described in the use cases in Section \ref{sec:theProblem}. In the solution proposed they does nothing, they are only interfaces. They can indeed not communicate directly with other clients, due to the limitations of the JavaScript language. 
+
+However, since the language is isomorphic, a whole simulation can be moved to one client and run there with all the parameters set previously. Obviously, that client will be the only monitor if there is not a server that works as a bridge for all the other clients. This situation is shown in Figure \ref{fig:entitiesMagicClient}, where a client simulates the whole system and returns the results to the other client.
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[width=0.8\textwidth]{./img/SystemAnalysis/EntitiesMagicClient.png}
+\caption{Alternative vision of the system client-focused}
+\label{fig:entitiesMagicClient}
+\end{figure}
+
+This solution, although may seem ``strange'' at first sight, is similar to the server-client architecture designed in some multiplayer games where one client acts as a server too. However, since the security issues and the increased overhead caused by the client-server-client communication, this choice hasn't been chosen. Although it would be really easy to switch, since you have only to move the code and redirect the calls.
+
+\subsection{Nameserver}
+
+In Figure \ref{fig:entities} you can see the we have chosen to have a nameserver too. The reason is because it servers as a name solver and a balancer too. We need to have an active figure that update the redis database with the entities that are connected to the system.
+
+In this way, we can redirect every client call to the less loaded webserver and to let it join to the selected simulation .
+
+Having only the redis instance operative, would lead to ghosts every time an entity disconnects itself, while in this situation the nameserver will keep the situation monitored.
+
+\subsection{Redis}
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[width=0.8\textwidth]{./img/SystemAnalysis/RedisPubSubBroker.png}
+\caption{Redis VS other solutions}
+\label{fig:redisVSotherSolutions}
+\end{figure}
+
+For the reasons explained above Redis comes very handy for this use case. It serves indeed as a database and as a pub/sub broker too, that allows our server-to-server communications. The current solution is show in the left part of Figure \ref{fig:redisVSotherSolutions}. However, if we want, we can split the Redis entity in two (database+pub/sub broker) and handle the two jobs in a separate way, as you can see in the right part of Figure \ref{fig:redisVSotherSolutions}.
+
+\subsection{Webserver}
+
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[width=0.8\textwidth]{./img/SystemAnalysis/EntitiesWebserver4everAlone.png}
+\caption{Simulation separated from the Webserver}
+\label{fig:entitiesWebserver4everAlone}
+\end{figure}
+
+In the architecture chosen as default (shown in Figure \ref{fig:entities}) there is only Client, Webserver, Redis and the Nameserver as active entities. This is because of the fact that there is no need of a further grade of distribution. As we know, more distribution will lead to possible lags, fragilities and problems. The system is also horizontally distributed, so if a webserver dies, the nameserver can redirect all the simulations to another one.
+
+However, World, Car and Box can be distributed if needed, as you can see in Figure \ref{fig:entitiesWebserver4everAlone} (the other webservers are omitted in the Figure). The reason is pretty basic. Since they are event emitter, there is no need for them to be local, but they can be set everywhere they can be reached. Obviously the simulation will start with a bigger delay, there can be problems such a fault of the communication (or a disconnection of a box, for example), but you can choose this solution if you want it.
+
+The webservers are not connected to each other since there is no need of communication. Every simulation is indeed atomic. We could however connect every webserver if we want to add the ability (not required) to move a live simulation from a webserver to another one. This could be easily done, since the whole simulation is a JSON object and the IA logic is shared in the webservers. So we would only have to add the ability for the clients to change the webserver with whom it is connected, that is pretty basic (simply send the address to the client and create a new socket.io connection, disconnecting from the previous one).
+
+This can be easily done settings a flag, since the communication instead of being in the local memory, it occurs through Ascoltatori.
+
+\subsection{World, Car, Box}
+
+The World represents the circuit, the boxes, the cars and the players. As we have said, the world could be both on the server (Figure \ref{fig:entities}) or on the client (Figure \ref{fig:entitiesMagicClient}). It can be also distributed as a separate process on the same server or in another server at all. Since every parts of it are connected through Ascoltatori, every parts of it can be distributed easily to other servers.
+
+We can decide to distribute also some part of the World in one or in every client. For example, we can choose to move every car simulation to its client, the same for the boxes. This howevery, will increase the fragility of the system, the security, the lags of the system and the communication overhead between the clients and the server for  syncing the entities.
+
+For this reason, the proposed solution has every entity in the server, although as said this configuration can be easily changed.
+
+\appendix
+\section{Installation}
+
+It is really basic to install the program. The first thing to do, is to download the source code. It can be easily downloaded from the F1.js website\footnote{F1.js website: \PROJECTurl} as .zip package or using git.
+
+Once the code is downloaded, you have to install node.js and npm (that usually comes with node.js). We relate to the official site for further details.\footnote{node.js official site: \url{http://nodejs.org/}}
+
+The first thing to do, is to setup the redis database. It can be locally available or on a redistogo instance. Once you have chosen what to use, you have to create the ``settings.json'' file with your settings.
+
+After that, you have to open the shell in the source folder and type ``npm install''. This would install every node package needed. To run the server, just type ``node app.js'' and go to ``localhost:3000'' with your browser to see the program running. You can open multiple tabs on the same site to simulate multiple clients.
 
 %\section{Subproblems analysis}
 

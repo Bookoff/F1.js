@@ -8,7 +8,7 @@ The program is release under the terms of MIT License.
 
 var redis = require("redis")
   , ascoltatori = require('ascoltatori')
-  , settings = require('../settings.json');
+  , settings = require('../settings.js');
 
 var client = redis.createClient(settings.distribution.settings.port, 
                             settings.distribution.settings.host, 

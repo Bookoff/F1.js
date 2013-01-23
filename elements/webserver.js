@@ -12,7 +12,7 @@ var express = require('express')
   , redis = require("redis")
   , io = require('socket.io')
   , ascoltatori = require('ascoltatori')
-  , settings = require('../settings.json');
+  , settings = require('../settings.js');
 
 var app = express();
 

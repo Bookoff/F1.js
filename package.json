@@ -1,19 +1,22 @@
 {
-  "name": "F1.js",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node app"
-  },
-  "dependencies": {
-    "express": "*",
-    "jade": "*",
-    "stylus": "*",
+    "name": "F1.js",
+    "author" : "Filnik",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node app"
+    },
+    "dependencies": {
+        "express": "*",
+        "ejs": "*",
+        "socket.io" : "*",
+        "websocket":"*",
 
-    "socket.io" : "*",
-    "ascoltatori": "*",
-    "hiredis" : "*",
-    "redis" : "*",
-    "async" : "*"
+        "ascoltatori": "*",
+        "hiredis" : "*",
+        "redis" : "*",
+
+        "async" : "*",
+        "box2d" : "*"
   }
 }

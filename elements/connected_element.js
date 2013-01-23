@@ -4,7 +4,7 @@
 
 var redis = require("redis")
   , ascoltatori = require('ascoltatori')
-  , settings = require('../settings.json');
+  , settings = require('../settings.js');
 
 function Element(id){ 
 	this.id = id;
