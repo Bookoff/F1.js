@@ -294,6 +294,18 @@ As for embedded real-time systems, this will lead to a big simplification of the
 
 To not complicate things too much, every switcher allows every car to move to every narrow slot (i.e. if the car is in slot 1, it can move to slot 2 but not to slot 3 since it is too far).
 
+\subsection{Events to handle}
+
+Every car has its parameters and doesn't care about where the other cars are until it is close to:
+\begin{itemize}
+\item a switcher. In this case, the car has to decide whether to change slot to overtake an opponent or not;
+\item another car. In this case, the car has to decide its speed according to the car that is reaching, trying to change slot as fast as possible to overtake it;
+\item its box. In this case the car has to decide if it's the case to enter the box or not;
+\item two or more of these cases.
+\end{itemize}
+
+In this way, the problem reduces to few decision and communication between the cars and the other part of the world. There is the need of a check only in these situation and not in every instance.
+
 \appendix
 \section{Installation}
 

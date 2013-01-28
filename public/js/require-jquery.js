@@ -2184,7 +2184,7 @@ jQuery.fn = jQuery.prototype = {
 	// The default length of a jQuery object is 0
 	length: 0,
 
-	// The number of elements contained in the matched element set
+	// The number of entities contained in the matched element set
 	size: function() {
 		return this.length;
 	},
@@ -2205,7 +2205,7 @@ jQuery.fn = jQuery.prototype = {
 			( num < 0 ? this[ this.length + num ] : this[ num ] );
 	},
 
-	// Take an array of elements and push it onto the stack
+	// Take an array of entities and push it onto the stack
 	// (returning the new matched element set)
 	pushStack: function( elems, name, selector ) {
 
@@ -3269,11 +3269,11 @@ jQuery.support = (function() {
 		// IE strips leading whitespace when .innerHTML is used
 		leadingWhitespace: ( div.firstChild.nodeType === 3 ),
 
-		// Make sure that tbody elements aren't automatically inserted
+		// Make sure that tbody entities aren't automatically inserted
 		// IE will insert them into empty tables
 		tbody: !div.getElementsByTagName("tbody").length,
 
-		// Make sure that link elements get serialized correctly by innerHTML
+		// Make sure that link entities get serialized correctly by innerHTML
 		// This requires a wrapper element in IE
 		htmlSerialize: !!div.getElementsByTagName("link").length,
 
@@ -3469,15 +3469,15 @@ jQuery.support = (function() {
 		}
 
 		if ( typeof div.style.zoom !== "undefined" ) {
-			// Check if natively block-level elements act like inline-block
-			// elements when setting their display to 'inline' and giving
+			// Check if natively block-level entities act like inline-block
+			// entities when setting their display to 'inline' and giving
 			// them layout
 			// (IE < 8 does this)
 			div.innerHTML = "";
 			div.style.cssText = divReset + "width:1px;padding:1px;display:inline;zoom:1";
 			support.inlineBlockNeedsLayout = ( div.offsetWidth === 3 );
 
-			// Check if elements with layout shrink-wrap their children
+			// Check if entities with layout shrink-wrap their children
 			// (IE 6 does this)
 			div.style.display = "block";
 			div.style.overflow = "visible";
@@ -3488,12 +3488,12 @@ jQuery.support = (function() {
 			container.style.zoom = 1;
 		}
 
-		// Null elements to avoid leaks in IE
+		// Null entities to avoid leaks in IE
 		body.removeChild( container );
 		container = div = tds = marginDiv = null;
 	});
 
-	// Null elements to avoid leaks in IE
+	// Null entities to avoid leaks in IE
 	fragment.removeChild( div );
 	all = a = select = opt = input = fragment = div = null;
 
@@ -3514,7 +3514,7 @@ jQuery.extend({
 	// Non-digits removed to match rinlinejQuery
 	expando: "jQuery" + ( jQuery.fn.jquery + Math.random() ).replace( /\D/g, "" ),
 
-	// The following elements throw uncatchable exceptions if you
+	// The following entities throw uncatchable exceptions if you
 	// attempt to add expando properties to them.
 	noData: {
 		"embed": true,
@@ -4371,7 +4371,7 @@ jQuery.extend({
 			}
 		},
 		// Use the value property for back compat
-		// Use the nodeHook for button elements in IE6/7 (#1954)
+		// Use the nodeHook for button entities in IE6/7 (#1954)
 		value: {
 			get: function( elem, name ) {
 				if ( nodeHook && jQuery.nodeName( elem, "button" ) ) {
@@ -5003,7 +5003,7 @@ jQuery.event = {
 
 			for ( cur = event.target; cur != this; cur = cur.parentNode || this ) {
 
-				// Don't process clicks (ONLY) on disabled elements (#6911, #8165, #11382, #11764)
+				// Don't process clicks (ONLY) on disabled entities (#6911, #8165, #11382, #11764)
 				if ( cur.disabled !== true || event.type !== "click" ) {
 					selMatch = {};
 					matches = [];
@@ -5800,7 +5800,7 @@ var cachedruns,
 		}
 	},
 
-	// Check if getElementsByTagName("*") returns only elements
+	// Check if getElementsByTagName("*") returns only entities
 	assertTagNameNoComments = assert(function( div ) {
 		div.appendChild( document.createComment("") );
 		return !div.getElementsByTagName("*").length;
@@ -5834,8 +5834,8 @@ var cachedruns,
 		return div.getElementsByClassName("e").length === 2;
 	}),
 
-	// Check if getElementById returns elements by name
-	// Check if getElementsByName privileges form controls or returns elements by ID
+	// Check if getElementById returns entities by name
+	// Check if getElementsByName privileges form controls or returns entities by ID
 	assertUsableName = assert(function( div ) {
 		// Inject content
 		div.id = expando + 0;
@@ -5963,7 +5963,7 @@ function createPositionalPseudo( fn ) {
 				matchIndexes = fn( [], seed.length, argument ),
 				i = matchIndexes.length;
 
-			// Match elements found at the specified indexes
+			// Match entities found at the specified indexes
 			while ( i-- ) {
 				if ( seed[ (j = matchIndexes[i]) ] ) {
 					seed[j] = !(matches[j] = seed[j]);
@@ -5985,7 +5985,7 @@ getText = Sizzle.getText = function( elem ) {
 
 	if ( nodeType ) {
 		if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
-			// Use textContent for elements
+			// Use textContent for entities
 			// innerText usage removed for consistency of new lines (see #11153)
 			if ( typeof elem.textContent === "string" ) {
 				return elem.textContent;
@@ -6394,7 +6394,7 @@ Expr = Sizzle.selectors = {
 						unmatched = matcher( seed, null, xml, [] ),
 						i = seed.length;
 
-					// Match elements unmatched by `matcher`
+					// Match entities unmatched by `matcher`
 					while ( i-- ) {
 						if ( (elem = unmatched[i]) ) {
 							seed[i] = !(matches[i] = elem);
@@ -6429,7 +6429,7 @@ Expr = Sizzle.selectors = {
 		},
 
 		"checked": function( elem ) {
-			// In CSS3, :checked should return both checked and selected elements
+			// In CSS3, :checked should return both checked and selected entities
 			// http://www.w3.org/TR/2011/REC-css3-selectors-20110929/#checked
 			var nodeName = elem.nodeName.toLowerCase();
 			return (nodeName === "input" && !!elem.checked) || (nodeName === "option" && !!elem.selected);
@@ -6751,7 +6751,7 @@ function addCombinator( matcher, combinator, base ) {
 			}
 		} :
 
-		// Check against all ancestor/preceding elements
+		// Check against all ancestor/preceding entities
 		function( elem, context, xml ) {
 			// We can't set arbitrary data on XML nodes, so they don't benefit from dir caching
 			if ( !xml ) {
@@ -6836,7 +6836,7 @@ function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postS
 			postMap = [],
 			preexisting = results.length,
 
-			// Get initial elements from seed or context
+			// Get initial entities from seed or context
 			elems = seed || multipleContexts( selector || "*", context.nodeType ? [ context ] : context, [] ),
 
 			// Prefilter to get matcher input, preserving a map for seed-results synchronization
@@ -6865,7 +6865,7 @@ function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postS
 			temp = condense( matcherOut, postMap );
 			postFilter( temp, [], context, xml );
 
-			// Un-match failing elements by moving them back to matcherIn
+			// Un-match failing entities by moving them back to matcherIn
 			i = temp.length;
 			while ( i-- ) {
 				if ( (elem = temp[i]) ) {
@@ -6889,7 +6889,7 @@ function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postS
 					postFinder( null, (matcherOut = []), temp, xml );
 				}
 
-				// Move matched elements from seed to results to keep them synchronized
+				// Move matched entities from seed to results to keep them synchronized
 				i = matcherOut.length;
 				while ( i-- ) {
 					if ( (elem = matcherOut[i]) &&
@@ -6900,7 +6900,7 @@ function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postS
 				}
 			}
 
-		// Add elements to results, through postFinder if defined
+		// Add entities to results, through postFinder if defined
 		} else {
 			matcherOut = condense(
 				matcherOut === results ?
@@ -6923,7 +6923,7 @@ function matcherFromTokens( tokens ) {
 		implicitRelative = leadingRelative || Expr.relative[" "],
 		i = leadingRelative ? 1 : 0,
 
-		// The foundational matcher ensures that elements are reachable from top-level context(s)
+		// The foundational matcher ensures that entities are reachable from top-level context(s)
 		matchContext = addCombinator( function( elem ) {
 			return elem === checkContext;
 		}, implicitRelative, true ),
@@ -6979,7 +6979,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 				unmatched = seed && [],
 				outermost = expandContext != null,
 				contextBackup = outermostContext,
-				// We must always have either seed elements or context
+				// We must always have either seed entities or context
 				elems = seed || byElement && Expr.find["TAG"]( "*", expandContext && context.parentNode || context ),
 				// Nested matchers should use non-integer dirruns
 				dirrunsUnique = (dirruns += contextBackup == null ? 1 : Math.E);
@@ -6989,7 +6989,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 				cachedruns = superMatcher.el;
 			}
 
-			// Add elements passing elementMatchers directly to results
+			// Add entities passing elementMatchers directly to results
 			for ( ; (elem = elems[i]) != null; i++ ) {
 				if ( byElement && elem ) {
 					for ( j = 0; (matcher = elementMatchers[j]); j++ ) {
@@ -7004,7 +7004,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 					}
 				}
 
-				// Track unmatched elements for set filters
+				// Track unmatched entities for set filters
 				if ( bySet ) {
 					// They will have gone through all possible matchers
 					if ( (elem = !matcher && elem) ) {
@@ -7018,7 +7018,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 				}
 			}
 
-			// Apply set filters to unmatched elements
+			// Apply set filters to unmatched entities
 			matchedCount += i;
 			if ( bySet && i !== matchedCount ) {
 				for ( j = 0; (matcher = setMatchers[j]); j++ ) {
@@ -7203,7 +7203,7 @@ if ( document.querySelectorAll ) {
 				rbuggyQSA.push( "\\[" + whitespace + "*(?:checked|disabled|ismap|multiple|readonly|selected|value)" );
 			}
 
-			// Webkit/Opera - :checked should return selected option elements
+			// Webkit/Opera - :checked should return selected option entities
 			// http://www.w3.org/TR/2011/REC-css3-selectors-20110929/#checked
 			// IE8 throws error here (do not put tests after this one)
 			if ( !div.querySelectorAll(":checked").length ) {
@@ -7220,7 +7220,7 @@ if ( document.querySelectorAll ) {
 				rbuggyQSA.push( "[*^$]=" + whitespace + "*(?:\"\"|'')" );
 			}
 
-			// FF 3.5 - :enabled/:disabled and hidden elements (hidden elements are still enabled)
+			// FF 3.5 - :enabled/:disabled and hidden entities (hidden entities are still enabled)
 			// IE8 throws error here (do not put tests after this one)
 			div.innerHTML = "<input type='hidden'/>";
 			if ( !div.querySelectorAll(":enabled").length ) {
@@ -7245,7 +7245,7 @@ if ( document.querySelectorAll ) {
 				// qSA works strangely on Element-rooted queries
 				// We can work around this by specifying an extra ID on the root
 				// and working up from there (Thanks to Andrew Dupont for the technique)
-				// IE 8 doesn't work on object elements
+				// IE 8 doesn't work on object entities
 				if ( context.nodeType === 1 && context.nodeName.toLowerCase() !== "object" ) {
 					groups = tokenize( selector );
 
@@ -7453,7 +7453,7 @@ jQuery.fn.extend({
 	},
 
 	// Determine the position of an element within
-	// the matched set of elements
+	// the matched set of entities
 	index: function( elem ) {
 
 		// No argument, return index in parent
@@ -7709,7 +7709,7 @@ jQuery.fn.extend({
 		}
 
 		if ( this[0] ) {
-			// The elements to wrap the target around
+			// The entities to wrap the target around
 			var wrap = jQuery( html, this[0].ownerDocument ).eq(0).clone(true);
 
 			if ( this[0].parentNode ) {
@@ -7901,8 +7901,8 @@ jQuery.fn.extend({
 
 	replaceWith: function( value ) {
 		if ( !isDisconnected( this[0] ) ) {
-			// Make sure that the elements are removed from the DOM before they are inserted
-			// this can help fix replacing a parent with child elements
+			// Make sure that the entities are removed from the DOM before they are inserted
+			// this can help fix replacing a parent with child entities
 			if ( jQuery.isFunction( value ) ) {
 				return this.each(function(i) {
 					var self = jQuery(this), old = self.html();
@@ -8078,7 +8078,7 @@ function cloneFixAttributes( src, dest ) {
 	nodeName = dest.nodeName.toLowerCase();
 
 	if ( nodeName === "object" ) {
-		// IE6-10 improperly clones children of object elements using classid.
+		// IE6-10 improperly clones children of object entities using classid.
 		// IE10 throws NoModificationAllowedError if parent is null, #12132.
 		if ( dest.parentNode ) {
 			dest.outerHTML = src.outerHTML;
@@ -8138,7 +8138,7 @@ jQuery.buildFragment = function( args, context, scripts ) {
 
 	// Only cache "small" (1/2 KB) HTML strings that are associated with the main document
 	// Cloning options loses the selected state, so don't cache them
-	// IE 6 doesn't like it when you put <object> or <embed> elements in a fragment
+	// IE 6 doesn't like it when you put <object> or <embed> entities in a fragment
 	// Also, WebKit does not clone 'checked' attributes on cloneNode, so don't cache
 	// Lastly, IE6,7,8 will not correctly reuse cached fragments that were created from unknown elems #10501
 	if ( args.length === 1 && typeof first === "string" && first.length < 512 && context === document &&
@@ -8249,7 +8249,7 @@ jQuery.extend({
 
 			// Weird iteration because IE will replace the length property
 			// with an element if you are cloning the body and one of the
-			// elements on the page has a name or id of "length"
+			// entities on the page has a name or id of "length"
 			for ( i = 0; srcElements[i]; ++i ) {
 				// Ensure that the destination node is not null; Fixes #9587
 				if ( destElements[i] ) {
@@ -8361,7 +8361,7 @@ jQuery.extend({
 			}
 		}
 
-		// Fix #11356: Clear elements from safeFragment
+		// Fix #11356: Clear entities from safeFragment
 		if ( div ) {
 			elem = div = safe = null;
 		}
@@ -8378,7 +8378,7 @@ jQuery.extend({
 			}
 		}
 
-		// Append elements to a provided document fragment
+		// Append entities to a provided document fragment
 		if ( fragment ) {
 			// Special handling of each script element
 			handleScript = function( elem ) {
@@ -8599,7 +8599,7 @@ function showHide( elements, show ) {
 				elem.style.display = "";
 			}
 
-			// Set elements which have been overridden with display: none
+			// Set entities which have been overridden with display: none
 			// in a stylesheet to whatever the default browser style is
 			// for such an element
 			if ( elem.style.display === "" && isHidden( elem ) ) {
@@ -8614,7 +8614,7 @@ function showHide( elements, show ) {
 		}
 	}
 
-	// Set the display of most of the elements in a second loop
+	// Set the display of most of the entities in a second loop
 	// to avoid the constant reflow
 	for ( index = 0; index < length; index++ ) {
 		elem = elements[ index ];
@@ -8946,7 +8946,7 @@ function getWidthOrHeight( elem, name, extra ) {
 		valueIsBorderBox = true,
 		isBorderBox = jQuery.support.boxSizing && jQuery.css( elem, "boxSizing" ) === "border-box";
 
-	// some non-html elements return undefined for offsetWidth, so check for null/undefined
+	// some non-html entities return undefined for offsetWidth, so check for null/undefined
 	// svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
 	// MathML - https://bugzilla.mozilla.org/show_bug.cgi?id=491668
 	if ( val <= 0 || val == null ) {
@@ -9028,7 +9028,7 @@ jQuery.each([ "height", "width" ], function( i, name ) {
 	jQuery.cssHooks[ name ] = {
 		get: function( elem, computed, extra ) {
 			if ( computed ) {
-				// certain elements can have dimension info if we invisibly show them
+				// certain entities can have dimension info if we invisibly show them
 				// however, it must have a current display style that would benefit from this
 				if ( elem.offsetWidth === 0 && rdisplayswap.test( curCSS( elem, "display" ) ) ) {
 					return jQuery.swap( elem, cssShow, function() {
@@ -9201,7 +9201,7 @@ jQuery.fn.extend({
 	}
 });
 
-//Serialize an array of form elements or a set of
+//Serialize an array of form entities or a set of
 //key/values into a query string
 jQuery.param = function( a, traditional ) {
 	var prefix,
@@ -9217,9 +9217,9 @@ jQuery.param = function( a, traditional ) {
 		traditional = jQuery.ajaxSettings && jQuery.ajaxSettings.traditional;
 	}
 
-	// If an array was passed in, assume that it is an array of form elements.
+	// If an array was passed in, assume that it is an array of form entities.
 	if ( jQuery.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) {
-		// Serialize the form elements
+		// Serialize the form entities
 		jQuery.each( a, function() {
 			add( this.name, this.value );
 		});
@@ -9419,7 +9419,7 @@ jQuery.fn.load = function( url, params, callback ) {
 		return _load.apply( this, arguments );
 	}
 
-	// Don't do a request if no elements are being requested
+	// Don't do a request if no entities are being requested
 	if ( !this.length ) {
 		return this;
 	}
@@ -9473,7 +9473,7 @@ jQuery.fn.load = function( url, params, callback ) {
 				// to avoid any 'Permission Denied' errors in IE
 				.append( responseText.replace( rscript, "" ) )
 
-				// Locate the specified elements
+				// Locate the specified entities
 				.find( selector ) :
 
 			// If not, just inject the full result
@@ -10824,12 +10824,12 @@ function defaultPrefilter( elem, props, opts ) {
 		opts.overflow = [ style.overflow, style.overflowX, style.overflowY ];
 
 		// Set display property to inline-block for height/width
-		// animations on inline elements that are having width/height animated
+		// animations on inline entities that are having width/height animated
 		if ( jQuery.css( elem, "display" ) === "inline" &&
 				jQuery.css( elem, "float" ) === "none" ) {
 
-			// inline-level elements accept inline-block;
-			// block-level elements need to be inline with layout
+			// inline-level entities accept inline-block;
+			// block-level entities need to be inline with layout
 			if ( !jQuery.support.inlineBlockNeedsLayout || css_defaultDisplay( elem.nodeName ) === "inline" ) {
 				style.display = "inline-block";
 
@@ -11013,7 +11013,7 @@ jQuery.each([ "toggle", "show", "hide" ], function( i, name ) {
 jQuery.fn.extend({
 	fadeTo: function( speed, to, easing, callback ) {
 
-		// show any hidden elements after setting opacity to 0
+		// show any hidden entities after setting opacity to 0
 		return this.filter( isHidden ).css( "opacity", 0 ).show()
 
 			// animate to the value specified
