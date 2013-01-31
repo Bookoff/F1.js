@@ -34,3 +34,13 @@ ascoltatore.subscribe("nameserver/register/*", function() {
 ascoltatore.publish("nameserver/register/entity", {type : "car", "address" : "memory" }, function registerEntity() {
     console.log("message published");
 });
+
+var NameServer = function(){
+
+};
+
+NameServer.prototype.start = function(){
+
+};
+
+module.exports = NameServer;

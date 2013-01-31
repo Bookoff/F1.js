@@ -2,17 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7ee24e60-b6b9-4154-bbb0-09fe87a496c4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/client.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/entity.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/elements/connected_element.js" afterPath="$PROJECT_DIR$/entities/connected_element.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/elements/nameserver.js" afterPath="$PROJECT_DIR$/entities/nameserver.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/elements/webserver.js" afterPath="$PROJECT_DIR$/entities/webserver.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/documentation/project_description.pdf" afterPath="$PROJECT_DIR$/documentation/project_description.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLinters/jshint.xml" afterPath="$PROJECT_DIR$/.idea/jsLinters/jshint.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/mymodules/job.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/documentation/project_description.tex" afterPath="$PROJECT_DIR$/documentation/project_description.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/require-jquery.js" afterPath="$PROJECT_DIR$/public/js/require-jquery.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/entities/nameserver.js" afterPath="$PROJECT_DIR$/entities/nameserver.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/entities/webserver.js" afterPath="$PROJECT_DIR$/entities/webserver.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/settings_example.js" afterPath="$PROJECT_DIR$/settings_example.js" />
     </list>
     <ignored path="F1.js.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,20 +28,60 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="app.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="71" column="3" selection-start="1794" selection-end="1794" vertical-scroll-proportion="0.0">
+            <state line="20" column="7" selection-start="502" selection-end="502" vertical-scroll-proportion="0.45385778">
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/settings.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="2" column="0" selection-start="15" selection-end="33" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="es10.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../../università/Project Euler/es10.js">
+      <file leaf-file-name="settings_example.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/settings_example.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="28" selection-start="791" selection-end="791" vertical-scroll-proportion="0.8850227">
+            <state line="13" column="20" selection-start="429" selection-end="429" vertical-scroll-proportion="0.0">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="connected_element.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/entities/connected_element.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="nameserver.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/entities/nameserver.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="45" column="0" selection-start="1012" selection-end="1040" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="webserver.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/entities/webserver.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="73" column="26" selection-start="1804" selection-end="1804" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -63,13 +99,7 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/databaseModel/nameserverModel.js" />
-        <option value="$PROJECT_DIR$/databaseModel/entitiesModel.js" />
-        <option value="$PROJECT_DIR$/databaseModel/entityModel.js" />
-        <option value="$PROJECT_DIR$/settings.js" />
-        <option value="$PROJECT_DIR$/database/entity.js" />
         <option value="$PROJECT_DIR$/database/client.js" />
-        <option value="$PROJECT_DIR$/entities/nameserver.js" />
         <option value="$PROJECT_DIR$/../ascoltatori/lib/redis_ascoltatore.js" />
         <option value="$PROJECT_DIR$/../facebookhackcup/balancedSmileys.js" />
         <option value="$PROJECT_DIR$/../facebookhackcup/package.json" />
@@ -79,6 +109,12 @@
         <option value="$PROJECT_DIR$/../facebookhackcup/balanced smileys/balancedSmileys.js" />
         <option value="$PROJECT_DIR$/../facebookhackcup/find the min/find_the_min.js" />
         <option value="$PROJECT_DIR$/../../università/Project Euler/es10.js" />
+        <option value="$PROJECT_DIR$/../projectEuler/es10.js" />
+        <option value="$PROJECT_DIR$/settings_example.js" />
+        <option value="$PROJECT_DIR$/settings.js" />
+        <option value="$PROJECT_DIR$/entities/nameserver.js" />
+        <option value="$PROJECT_DIR$/entities/webserver.js" />
+        <option value="$PROJECT_DIR$/app.js" />
       </list>
     </option>
   </component>
@@ -181,6 +217,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="entities" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="F1.js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="F1.js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="documentation" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -209,8 +259,8 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="options.lastSelected" value="editor.preferences.appearance" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -218,6 +268,9 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="$PROJECT_DIR$">
+      <method />
+    </configuration>
     <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
       <JSDebuggerConfigurationSettings>
         <option name="engineId" value="embedded" />
@@ -278,10 +331,10 @@
     <frame x="0" y="22" width="1440" height="809" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946298" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32848838" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994187" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19124912" sideWeight="0.32656023" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19124912" sideWeight="0.670537" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19124912" sideWeight="0.67151165" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -351,14 +404,22 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../facebookhackcup/find the min/find_the_min.js">
+    <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="104" column="29" selection-start="4124" selection-end="4124" vertical-scroll-proportion="0.0" />
+        <state line="93" column="42" selection-start="2157" selection-end="2157" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mymodules/job.js">
+    <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+        <state line="71" column="3" selection-start="1794" selection-end="1794" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
@@ -376,11 +437,6 @@
         <state line="9" column="18" selection-start="180" selection-end="180" vertical-scroll-proportion="0.2109375" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/settings.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="5" selection-start="463" selection-end="463" vertical-scroll-proportion="0.2932331" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/database/client.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="0" selection-start="183" selection-end="183" vertical-scroll-proportion="0.0" />
@@ -389,11 +445,6 @@
     <entry file="file://$PROJECT_DIR$/public/js/game.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="24" column="16" selection-start="683" selection-end="683" vertical-scroll-proportion="0.02255639" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/entities/nameserver.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="2" selection-start="393" selection-end="393" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../ascoltatori/lib/redis_ascoltatore.js">
@@ -408,32 +459,54 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../facebookhackcup/beautiful strings/beautiful_strings.js">
+    <entry file="file://$PROJECT_DIR$/../projectEuler/es10.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="9" selection-start="2132" selection-end="2132" vertical-scroll-proportion="0.0" />
+        <state line="44" column="28" selection-start="982" selection-end="982" vertical-scroll-proportion="0.7054381" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../facebookhackcup/balanced smileys/balancedSmileys.js">
+    <entry file="file://$PROJECT_DIR$/entities/connected_element.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="9" selection-start="2142" selection-end="2142" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../facebookhackcup/find the min/find_the_min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="104" column="29" selection-start="4124" selection-end="4124" vertical-scroll-proportion="0.023148147" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="3" selection-start="1794" selection-end="1794" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../università/Project Euler/es10.js">
+    <entry file="file://$PROJECT_DIR$/settings_example.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="28" selection-start="791" selection-end="791" vertical-scroll-proportion="0.8850227">
+        <state line="13" column="20" selection-start="429" selection-end="429" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/settings.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="0" selection-start="15" selection-end="33" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entities/nameserver.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="0" selection-start="1012" selection-end="1040" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entities/webserver.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="73" column="26" selection-start="1804" selection-end="1804" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="7" selection-start="502" selection-end="502" vertical-scroll-proportion="0.45385778">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -58,8 +58,17 @@ var ascoltatore = new ascoltatori.RedisAscoltatore({
   client : client
 });
 
-
 ascoltatore.subscribe("hello/*", function() {
   // this will print { '0': "hello/42", '1': "a message" }
   console.log(arguments);
 });
+
+var WebServer = function(){
+
+};
+
+WebServer.prototype.start = function(){
+
+};
+
+module.exports = WebServer;
