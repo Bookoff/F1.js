@@ -12,7 +12,7 @@ lib-cov
 *.bbl
 *.blg
 *.synctex.gz
-
+.idea/
 
 pids
 logs

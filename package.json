@@ -17,6 +17,7 @@
         "redis" : "*",
 
         "async" : "*",
-        "box2d" : "*"
+        "box2d" : "*",
+        "node-schedule" : "*"
   }
 }
