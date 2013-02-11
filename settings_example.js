@@ -5,13 +5,24 @@ module.exports = {
         "port" : 3000
     },
     "distribution" : {
-        "grade" : "single-process", // grade can be: single-process, multi-process or multi-server
         "type" : "redis", // memory (=single-process) and redis are now supported
         "settings": {
-            "port"  : 9202,
-            "host"  : "spadefish.redistogo.com",
+            "port" 	: 9202,
             "db"    : 1,
-            "auth"  : ""
-        }
+            "host" 	: "spadefish.redistogo.com",
+            "password" : ""
+        },
+        "distributedEntities"   : undefined,
+        "localEntities"         : ["webserver", "nameserver"]
+        /*
+         "settings": {
+         "db"    : 1,
+         "port" 	: 6379,
+         "host" 	: "127.0.0.1"
+         }
+         */
+    },
+    "cookies" : {
+        "key" : "rand key"
     }
-};
+}
