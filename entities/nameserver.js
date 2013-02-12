@@ -6,7 +6,9 @@ The program is release under the terms of MIT License.
 
 "use strict";
 
-var createConnection = require('./connection.js'),
+// http://blog.nodejitsu.com/http-proxy-intro
+
+var createConnection = require('./../database/connection.js'),
     World = require('./world');
 
 var NameServer = function(){
@@ -15,7 +17,14 @@ var NameServer = function(){
 NameServer.prototype.start = function(distribution){
     var connection = createConnection(distribution);
 
-    connection.subscribe("nameserver/register/*", function() {
+    var channelName = "nameserver/register/";
+
+    connection.subscribe(channelName + "*", function() {
+        var channel = arguments[0];
+        var entity = channel.split(channelName)[1];
+        var data = arguments[1];
+        console.log(entity);
+        console.log(data);
     });
 
     connection.publish("nameserver/register/entity", {type : "car", "address" : "memory" }, function registerEntity() {

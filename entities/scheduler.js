@@ -7,7 +7,7 @@ The program is release under the terms of MIT License.
 "use strict";
 
 var schedule = require('node-schedule'),
-    createConnection = require('./connection.js');
+    createConnection = require('./../database/connection.js');
 
 var Scheduler = function(){
 };
