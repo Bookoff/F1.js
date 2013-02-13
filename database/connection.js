@@ -6,9 +6,9 @@ var redis = require("redis")
   , ascoltatori = require('ascoltatori')
   , settings = require('../settings.js');
 
-function Connection(){
-    this.distributionSettings = settings.distribution.settings;
-}
+var Connection = function () {
+   this.distributionSettings = settings.distribution.settings;
+};
 
 Connection.prototype.newAscoltatore = function(location){
 

@@ -23,7 +23,6 @@ var WebServer = function(){
         app.use(express.logger('dev'));
         app.use(express.bodyParser());
         app.use(express.methodOverride());
-        // TODO: move to un-synced file
         app.use(express.cookieParser(settings.cookies.key));
         app.use(express.session());
         app.use(app.router);

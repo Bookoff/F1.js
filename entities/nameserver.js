@@ -8,18 +8,22 @@ The program is release under the terms of MIT License.
 
 // http://blog.nodejitsu.com/http-proxy-intro
 
-var createConnection = require('./../database/connection.js'),
+var Connection = require('./../database/connection.js'),
     World = require('./world');
 
 var NameServer = function(){
+    this.connection = new Connection();
+    this.redisClient = this.connection.newRedisClient();
 };
 
 NameServer.prototype.start = function(distribution){
-    var connection = createConnection(distribution);
-
     var channelName = "nameserver/register/";
 
-    connection.subscribe(channelName + "*", function() {
+    this.ascoltatore = this.connection.newAscoltatore(distribution);
+
+    console.dir(this.redisClient.send_command('list', [], function(data){console.log('!!' + data)}));
+
+    this.ascoltatore.subscribe(channelName + "*", function() {
         var channel = arguments[0];
         var entity = channel.split(channelName)[1];
         var data = arguments[1];
@@ -27,7 +31,7 @@ NameServer.prototype.start = function(distribution){
         console.log(data);
     });
 
-    connection.publish("nameserver/register/entity", {type : "car", "address" : "memory" }, function registerEntity() {
+    this.ascoltatore.publish("nameserver/register/entity", {type : "car", "address" : "memory" }, function registerEntity() {
         console.log("message published");
     });
 };
