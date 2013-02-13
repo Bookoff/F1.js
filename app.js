@@ -9,17 +9,26 @@ The program is release under the terms of MIT License.
 var settings = require('./settings.js');
 
 var main = function(){
-    var distribution = 'redis';
-    if (settings.distribution.distributedEntities == undefined){
-        distribution = 'local';
-    }
     var entities = settings.distribution.localEntities;
     for (var entityName in entities){
         console.log('Loading ' + entities[entityName] + '...');
-        var entity = require('./entities/' + entities[entityName] + '.js');
-        new entity().start(distribution);
+        var Entity = require('./entities/' + entities[entityName] + '.js');
+        new Entity().start();
     }
     console.log("Entities loaded. Let's play!");
 };
 
 main();
+
+var HeartBeatAscoltatore = require('./database/heartBeatAscoltatore.js');
+var Connection = require('./database/connection.js');
+var connection = new Connection();
+var ascoltatore = connection.newAscoltatore();
+var heartAscoltatore = new HeartBeatAscoltatore(ascoltatore, connection);
+
+heartAscoltatore.subscribe('test', function(channel, data){
+    console.log(channel);
+    console.log(data);
+});
+
+heartAscoltatore.publish('test', {prova : 'uno'});
