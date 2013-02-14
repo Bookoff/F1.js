@@ -32,16 +32,26 @@ Connection.prototype.newRedisClient = function(){
     return this.client;
 };
 
-Connection.prototype.getIpAddress = function(callback){
-    this.newRedisClient(); // check wheter we have the redis client
+Connection.prototype._rawClientAccess = function(regex, callback){
+    this.newRedisClient(); // check whether we have the redis client
 
     this.client.client("list", function(err, data){
-        if (err === undefined){
-            var regexResult = data.match(/addr=([^ ]*?):/);
+        if (err === null){
+            var regexResult = data.match(regex);
             var myIP = regexResult[1];
             callback(myIP);
+        }else{
+            console.log(err);
         }
     });
+};
+
+Connection.prototype.getIpAndPort = function(callback){
+    this._rawClientAccess(/addr=([^ ]*?) /, callback);
+};
+
+Connection.prototype.getIp = function(callback){
+    this._rawClientAccess(/addr=([^ ]*?):/, callback);
 };
 
 module.exports = Connection;

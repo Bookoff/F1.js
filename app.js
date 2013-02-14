@@ -27,8 +27,15 @@ var ascoltatore = connection.newAscoltatore();
 var heartAscoltatore = new HeartBeatAscoltatore(ascoltatore, connection);
 
 heartAscoltatore.subscribe('test', function(channel, data){
-    console.log(channel);
-    console.log(data);
+    console.log('receiving');
+    console.log({channel : channel, data : data});
 });
 
 heartAscoltatore.publish('test', {prova : 'uno'});
+
+heartAscoltatore.on('nodeDeath', function(){
+    console.log('nodeDeath');
+    console.log(arguments);
+});
+
+heartAscoltatore.close();
