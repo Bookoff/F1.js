@@ -26,9 +26,9 @@
 \end{center}
 In this document is described how the F1.js program has been designed and implemented. It is a project developed for the ``Concurrent and distributed systems'' exam, matching the requirements that can be found at: \url{http://www.math.unipd.it/~tullio/SCD/2008/Progetto.html}
 
- The programming language chosen for this project is Javascript/node.js, for its particular properties that makes this task a lot easier than in other languages.
+The programming language chosen for this project is Javascript/node.js, for its particular properties that makes this task a lot easier than in other languages.
 
-This is accomplished by the fact that in node.js there is no difference between concurrency and distribution, as it will be explained.
+This is accomplished by the fact that in node.js there is no difference between concurrency and distribution, as it will be explained later in the document.
 
 \newpage
 \section{The language}
@@ -38,11 +38,22 @@ In order to understand how we solved the problem, is important to give an explan
 
 As said, the project has been written using node.js. Quoting the official site's main page: \textit{Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.}\footnote{Official node.js website: \url{http://www.nodejs.org}}
 
-In other words, it is expressive, in particular with the Express.js framework\footnote{Official Express.js framework website: \url{http://expressjs.com/}}, fast and scalable. 
+In other words, it is expressive, in particular with the Express.js framework\footnote{Official Express.js framework website: \url{http://expressjs.com/}}, fast and scalable.
 
 An important aspect is the use of the V8 JavaScript Engine to interpret the JavaScript code. Written by Google, it increases performance by compiling JavaScript to native machine code (x86, ARM, or MIPS CPUs)\cite{website:v8-intro}, before executing it, versus executing bytecode or interpreting it.
 
 Performances aren't great only for the use of V8, but also for the programming style that node.js implies.
+
+\subsection{Soft real-time VS Hard real-time}
+There are two main types of real-time:
+\begin{itemize}
+	\item Soft real-time, where deadlines are arbitrary, i.e. it's highly preferable that the deadline is met, but you can't guarantee it;
+	\item Hard real-time, you have to be sure that the deadline is granted.
+\end{itemize}
+
+In every part of this document, if we speak in general about real-time, we mean soft real-time. Using internet and/or Ethernet, in its standard version, to communicate it's almost impossible to have a real hard real-time system and, for this project is not required. 
+
+However, we have to ensure that in most cases the communication is effective and the system works as expected, taking the right decision before it's too late.
 
 \subsubsection{Asynchronous I/O}
 \label{sec:async}
@@ -131,7 +142,7 @@ We choose \textbf{Redis} because it ``is a database, but it would be more accura
 \section{The problem}
 \label{sec:theProblem}
 
-To analyse the problem we have chosen to describe it through UML-schemas in order to have a clear path to follow.
+To analyze the problem we have chosen to describe it through UML-schemas in order to have a clear path to follow.
 
 \subsection{F1.js}
 
@@ -155,7 +166,7 @@ The normal user can enter the game simulation and view the control system with t
 \label{fig:GameSimulation}
 \end{figure}
 
-When a new user connects to the system, she can decide what car and which player to play with. If she doesn't want, she can let the default parameters. Finally, she can decide to view or to take part to the current race. If there are already enough player, the race begins and every new player can only watch the competition.
+When a new user connects to the system, she can decide what car and which player to play with. If she doesn't want, she can let the default parameters. Finally, she can decide to view or to take part to the current race. If there are already enough players or the preparation time is over, the race begins. Every new player can watch the competition, take part to a new one or to take the control of a car controlled previously by the system.
 
 \subsection{The Administration Panel}
 
@@ -185,9 +196,9 @@ In Figure \ref{fig:AdministrationPanel} there is the panel where the administrat
 
 In Figure \ref{fig:ControlSystem} is described the control system. Every user can view:
 \begin{itemize}
-\item the competition's status;
+\item the competition's status. Who is winning, timing of the players, etc.;
 \item the best performance until now;
-\item the player's status.
+\item the player's status (laps, timings, fuel, etc).
 \end{itemize}
 
 \section{System Analysis}
@@ -246,7 +257,7 @@ For the reasons explained above Redis comes very handy for this use case. It ser
 
 In the architecture chosen as default (shown in Figure \ref{fig:entities}) there is only Client, Webserver, Redis and the Nameserver as active entities. This is because of the fact that there is no need of a further grade of distribution. As we know, more distribution will lead to possible lags, fragilities and problems. The system is also horizontally distributed, so if a webserver dies, the nameserver can redirect all the simulations to another one.
 
-However, World, Car and Box can be distributed if needed, as you can see in Figure \ref{fig:entitiesWebserver4everAlone} (the other webservers are omitted in the Figure). The reason is pretty basic. Since they are event emitter, there is no need for them to be local, but they can be set everywhere they can be reached. Obviously the simulation will start with a bigger delay, there can be problems such a fault of the communication (or a disconnection of a box, for example), but you can choose this solution if you want it.
+However, World, Car and Box can be distributed if needed, as you can see in Figure \ref{fig:entitiesWebserver4everAlone} (the other webservers are omitted in the Figure). The reason is pretty basic. Since they are event emitters, there is no need for them to be local, but they can be set everywhere they can be reached. Obviously the simulation will start with a bigger delay, there can be problems such as a fault of the communication (or a disconnection of a box, for example), but you can choose this solution if you want it.
 
 The webservers are not connected to each other since there is no need of communication. Every simulation is indeed atomic. We could however connect every webserver if we want to add the ability (not required) to move a live simulation from a webserver to another one. This could be easily done, since the whole simulation is a JSON object and the IA logic is shared in the webservers. So we would only have to add the ability for the clients to change the webserver with whom it is connected, that is pretty basic (simply send the address to the client and create a new socket.io connection, disconnecting from the previous one).
 
@@ -269,9 +280,9 @@ For this reason, the proposed solution has every entity in the server, although 
 \label{fig:overtaking}
 \end{figure}
 
-In Figure \ref{fig:overtaking} we can see a step car race. Slot cars are machines that runes in a circuit, like the one that we have to simulate, that can run only in a defined slot with the circuit itself. It is interesting to notate that, to overtake an opponent, the two cars have to be in different slots, otherwise they will crash.
+In Figure \ref{fig:overtaking} we can see a slot car race. Slot cars are machines that runs in a circuit, like the ones that we have to simulate, that can run only in a defined slot in the circuit. It is interesting to notate that, to overtake an opponent, the two cars have to be in different slots, otherwise they will crash.
 
-In some competitions, every car is in a different slot, so the overtake is just natural when a car runs faster than the other. However, since this will make the simulation not so effective, we have decided to simulate the race with a different type of track.
+In some competitions, every car is in a different slot, so the overtake is just natural when a car runs faster than the other. However, since this will make the simulation not so effective, we have decide to simulate the race with a different type of track.
 
 \begin{figure}[H]
 \centering % per centrare l'immagine (opzionale)
@@ -280,7 +291,7 @@ In some competitions, every car is in a different slot, so the overtake is just 
 \label{fig:switcher}
 \end{figure}
 
-In Figure \ref{fig:switcher} we can see a \textit{switcher}. With this term we mean a particular track that allows machines to change their slot. In this way, cars can't simply change slot when they want, but they have to wait for this sort of \textit{interrupt}. 
+In Figure \ref{fig:switcher} we can see a \textit{switcher}. With this term we mean a particular piece of track that allows machines to change their slot. In this way, cars can't simply change slot when they want, but they have to wait for this sort of \textit{interrupt}. 
 
 As for embedded real-time systems, this will lead to a big simplification of the logic and of the connections. Indeed, we haven't to check in every instance where the other cars are (that may be a costs in terms of lags, if the cars are distributed) but only when we receive this sort of interrupt. This is also much more interesting, since it is easier that crashes occurs and the cars has to handle it correctly.
 
